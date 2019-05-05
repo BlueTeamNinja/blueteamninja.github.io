@@ -13,16 +13,15 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-title: MM
-email:
+title: BlueTeam Ninja Dojo
+email: chief@blueteam.ninja
 description: >- # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
-baseurl: /mm-github-pages-starter
-url: https://mmistakes.github.io
-twitter_username: username
-github_username: username
+  One of the greatest corners of the internet to hang up your 
+  top-hat and throwing stars.  Stay for a bit and have a gaff. 
+#baseurl: 
+url: https://blueteam.ninja
+#twitter_username: username
+#github_username: username
 minimal_mistakes_skin: default
 search: true
 
@@ -60,9 +59,9 @@ plugins:
   - jekyll-include-cache
 
 author:
-  name   : "First Lastname"
+  name   : "Big Abe"
   avatar : "/assets/images/bio-photo.jpg"
-  bio    : "My awesome biography constrained to a sentence or two goes here."
+  bio    : "Seasoned veteran of the dark arts of workstations (aka Windows Admin)"
   links:
     - label: "Website"
       icon: "fas fa-fw fa-link"
