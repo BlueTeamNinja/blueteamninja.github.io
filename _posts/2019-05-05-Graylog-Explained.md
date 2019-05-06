@@ -36,7 +36,7 @@ This is where I struggled the most in figuring out how to really unleash the pow
 
 The most fundamental pieces to me are, in no order:
 
-* Inputs
+* [Inputs](#Inputs)
 * Log Collectors & Beats
 * [Indices (Index Sets)](#Inputs)
 * Pipelines
@@ -47,8 +47,9 @@ The most fundamental pieces to me are, in no order:
 * SideCar
 
 <details>
-<summary>## Inputs</summary>
+<summary>Inputs</summary>
 
+## Inputs
 This is where you actually tell GrayLog to listen for incoming logs.  If you have played with GrayLog a little bit, by now you have likely created a couple of inputs.  There are a ton of pre-built inputs and a capability to add more via plugins.  I have yet to need an outside plugin for any purpose so far.  The built-in plugins basically determine a port, a protocol, and a default parsing mechanism.  I tend to group my inputs by delivering systems but this is entirely up to you.  I spread all the inputs around as well and others use as few as possible.  Further considerations are upstream firewalls.  The less ports you use, the less change management to request some holes poked for logs. 
 
 **Rookie Mistakes**:  One of the first thing that folks get hung up on is that they created an input, they see network traffic, but no logs when they click into it. 
@@ -56,9 +57,11 @@ This is where you actually tell GrayLog to listen for incoming logs.  If you hav
 **PRO TIP:** This has two really common causes for beginners.
 
 **Timezones** or **Parsers**.  Either your logs are sending in a timestamp WITHOUT A TIMEZONE and GrayLog is adjusting it to your local timezone.  Search your logs for a day in the future or the past to see if your live logs are there.  For the latter, delete your input and try it as 'Raw' input to rule out any network connectivity. 
+</Details>
+<Details>
+<summary>Log Collectors</summary>
 
-## Log Collectors and Beats
-
+## Log Collectors
 Many of the inputs on GrayLog are meant for devices/applications to send various forms of Syslog or GELF messages into the various places with GrayLog.  However, there are just as many scenarios where you want to collect an actual 'connections.log' file from an application folder, or within ```/var/log```
 
 This is where "Beats" come into play.  These are applications/binaries built and maintained by ElasticSearch.  They can be easily (and often required) created by hand or by automation using the sidecar collector service.  
@@ -68,6 +71,10 @@ I have done everything so far using only 3 different beats:
   * FileBeat - Cross-platform binary that is configured to send entries created in a log file to the GrayLog service.  
   * WinLogBeat - Windows tool used to send in logs from Windows Event Viewer.  Examples are Event ID 4624 for "User Logged in" or workstation 'Error' messages.  Can you imagine the surprise of your users when you call them **BEFORE** they ever had or reported an issue?
   * PacketBeat - Sent packet trace events with a big collection of prebuilt network signatures.  Examples are DNS (port 53) or DHCP. 
+
+</details>
+<details>
+<summary>Indicies (Index Sets)</summary>
 
 ## Indices  (Index Sets)
 
@@ -102,7 +109,7 @@ In my environment I set up the following Index Sets:
   * Samples:  Anything half-baked. 
   * Retention:  3 days (So you can resume Fridays work on a Monday.  Trust me.)
   * Naming: **TEST-**  <-- Yes - its 4 characters instead of three so that its EXTREMELY obviously in a giant list of index sets which ones are still being made.
-
+</details>
 ## Streams
 
 Once you have a handle on Index Sets - Streams become much easier to sort out.  You assign a stream to a single Index Set.  By default, all messages go into the cleverly titled "All Messages" stream.  Since you assign a single Index Set to a Stream, they are basically an extension of Retention policies, only more granular.  Using the examples above, you might keep certain Active Directory Changes for 5 years, and some events for only 18 months or 1 month.  
