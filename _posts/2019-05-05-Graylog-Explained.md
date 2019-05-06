@@ -38,7 +38,7 @@ The most fundamental pieces to me are, in no order:
 
 * Inputs
 * Log Collectors & Beats
-* Indices (Index Sets)
+* [Indices (Index Sets)](#Inputs)
 * Pipelines
 * Pipeline Processing Rules
 * Message Processing Order
@@ -46,7 +46,8 @@ The most fundamental pieces to me are, in no order:
 * Extractors
 * SideCar
 
-## Inputs
+<details>
+<summary>## Inputs</summary>
 
 This is where you actually tell GrayLog to listen for incoming logs.  If you have played with GrayLog a little bit, by now you have likely created a couple of inputs.  There are a ton of pre-built inputs and a capability to add more via plugins.  I have yet to need an outside plugin for any purpose so far.  The built-in plugins basically determine a port, a protocol, and a default parsing mechanism.  I tend to group my inputs by delivering systems but this is entirely up to you.  I spread all the inputs around as well and others use as few as possible.  Further considerations are upstream firewalls.  The less ports you use, the less change management to request some holes poked for logs. 
 
