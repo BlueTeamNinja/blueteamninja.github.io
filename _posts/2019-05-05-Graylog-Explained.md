@@ -1,16 +1,19 @@
 ---
-title: "Draft - Graylog Explained"
-date: 2019-05-05T15:34:30-04:00
+title: Draft - Graylog Explained
+date: {}
 categories:
   - blog
 tags:
   - graylog
   - Windows
   - Logging
+published: true
 ---
 
 # GrayLog.  Explained 
-## Amazing Open-Source Log Management for your everyday Windows Ninja 
+## Amazing Open-Source Log Management for your everyday Windows Ninja
+
+![]({{site.baseurl}}/https://www.eventures.vc/wp-content/uploads/Graylog.png)
 
 GrayLog is a Log Management platform.  It's primary purpose is to injest large amounts of log data, then process and store it according to your design.  The Web interface built on top of it allows you to search through millions of log records and quickly retrieve your information. You can also sort it into visually appealling dashboards with charts, tables, trend indicators and more for great insight and analysis.  
 
