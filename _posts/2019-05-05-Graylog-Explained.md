@@ -105,11 +105,12 @@ In my environment I set up the following Index Sets:
   * Retention: 10 days
   * Naming: **MET-**
 
+
 * Test/Dev:  When you start building more and more pipeline rules, you will inevitably accidentally slam millions of logs into your 5-year retention rule.  Then, when you try to remove just those new, unfiltered entries - you'll then learn you can't delete individual logs - only individual indicies.  I'll save you some Derp moments.  We both know you'll make this mistake, though.  At least I told you so. 
   * Samples:  Anything half-baked. 
   * Retention:  3 days (So you can resume Fridays work on a Monday.  Trust me.)
   * Naming: **TEST-**  <-- Yes - its 4 characters instead of three so that its EXTREMELY obviously in a giant list of index sets which ones are still being made.
-  
+
 </details>
 ## Streams
 
