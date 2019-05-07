@@ -9,11 +9,8 @@ tags:
   - Logging
 published: true
 ---
-
 # GrayLog.  Explained 
-## Amazing Open-Source Log Management for your everyday Windows Ninja
-
-![]({{site.baseurl}}/https://www.eventures.vc/wp-content/uploads/Graylog.png)
+## Amazing Open-Source Log Management for your everyday Windows Ninja 
 
 GrayLog is a Log Management platform.  It's primary purpose is to injest large amounts of log data, then process and store it according to your design.  The Web interface built on top of it allows you to search through millions of log records and quickly retrieve your information. You can also sort it into visually appealling dashboards with charts, tables, trend indicators and more for great insight and analysis.  
 
@@ -40,46 +37,45 @@ This is where I struggled the most in figuring out how to really unleash the pow
 The most fundamental pieces to me are, in no order:
 
 * [Inputs](#Inputs)
-* [Log Collectors](#Log-Collectors)
+* [Log Collectors & Beats](#Log-Collectors-and-Beats)
 * [Indices (Index Sets)](#Indices-Index-Sets)
 * [Streams](#Streams)
 * [Pipelines](#Pipelines)
 * [Pipeline Processing Rules](#Pipeline-Processing-Rules)
-* [Extractors (and Grok)](#Extractors)
+* [Extractors](#Extractors) (Bonus: [Grok? Huh?](#Bonus-What-on-earth-does-Grok-mean))
 * [Message Processing Order](#Message-Processing-Order)
 * [SideCar](#Sidecar)
 
 ## Inputs
 
-This is where you actually tell GrayLog to listen for incoming logs.  If you have played with GrayLog a little bit, by now you have likely created a couple of inputs.  There are a ton of pre-built inputs and a capability to add more via plugins.  I have yet to need an outside plugin for any purpose so far.  The built-in plugins basically determine a port, a protocol, and a default parsing mechanism.  I tend to group my inputs by delivering systems but this is entirely up to you.  I spread all the inputs around as well and others use as few as possible.  Further considerations are upstream firewalls.  The less ports you use, the less change management to request some holes poked for logs.
+This is where you actually tell GrayLog to listen for incoming logs.  If you have played with GrayLog a little bit, by now you have likely created a couple of inputs.  There are a ton of pre-built inputs and a capability to add more via plugins.  I have yet to need an outside plugin for any purpose so far.  The built-in plugins basically determine a port, a protocol, and a default parsing mechanism.  I tend to group my inputs by delivering systems but this is entirely up to you.  I spread all the inputs around as well and others use as few as possible.  Further considerations are upstream firewalls.  The less ports you use, the less change management to request some holes poked for logs. 
 
-**Rookie Mistakes**:  One of the first thing that folks get hung up on is that they created an input, they see network traffic, but no logs when they click into it.
+**Rookie Mistakes**:  One of the first thing that folks get hung up on is that they created an input, they see network traffic, but no logs when they click into it. 
 
 **PRO TIP:** This has two really common causes for beginners.
 
-**Timezones** or **Parsers**.  Either your logs are sending in a timestamp WITHOUT A TIMEZONE and GrayLog is adjusting it to your local timezone.  Search your logs for a day in the future or the past to see if your live logs are there.  For the latter, delete your input and try it as 'Raw' input to rule out any network connectivity.
+**Timezones** or **Parsers**.  Either your logs are sending in a timestamp WITHOUT A TIMEZONE and GrayLog is adjusting it to your local timezone.  Search your logs for a day in the future or the past to see if your live logs are there.  For the latter, delete your input and try it as 'Raw' input to rule out any network connectivity. 
 
-## Log Collectors
+## Log Collectors and Beats
 
 Many of the inputs on GrayLog are meant for devices/applications to send various forms of Syslog or GELF messages into the various places with GrayLog.  However, there are just as many scenarios where you want to collect an actual 'connections.log' file from an application folder, or within ```/var/log```
 
 This is where "Beats" come into play.  These are applications/binaries built and maintained by ElasticSearch.  They can be easily (and often required) created by hand or by automation using the sidecar collector service.  
 
-I have done everything so far using only 3 different beats:
+I have done everything so far using only 3 different beats: 
 
-* FileBeat - Cross-platform binary that is configured to send entries created in a log file to the GrayLog service.  
-* WinLogBeat - Windows tool used to send in logs from Windows Event Viewer.  Examples are Event ID 4624 for "User Logged in" or workstation 'Error' messages.  Can you imagine the surprise of your users when you call them **BEFORE** they ever had or reported an issue?
-* PacketBeat - Sent packet trace events with a big collection of prebuilt network signatures.  Examples are DNS (port 53) or DHCP.
+  * FileBeat - Cross-platform binary that is configured to send entries created in a log file to the GrayLog service.  
+  * WinLogBeat - Windows tool used to send in logs from Windows Event Viewer.  Examples are Event ID 4624 for "User Logged in" or workstation 'Error' messages.  Can you imagine the surprise of your users when you call them **BEFORE** they ever had or reported an issue?
+  * PacketBeat - Sent packet trace events with a big collection of prebuilt network signatures.  Examples are DNS (port 53) or DHCP. 
 
-## Indices (Index Sets)
+## Indices  (Index Sets)
 
 I think this was the hardest for me to grasp.  As a Windows admin, concepts like ElasticSearch and MongoDB are just words.  
 
 Basically, an Index Set is your retention policy.  In fact, to me, the wording is crazy (until I learned much more about the whole ELK stack, now it makes a lot more sense).  The **Index Period** is how often you want the logs to rotate.  You can choose to rotate logs by size or period.  In other words, do you want to keep 10GB of Webfilter Logs, or 180 days of Webfilter logs.  You can apply any **STREAM** to an Index Set.  Design your index sets as "Categories" of log retentions.
 
 #### Architectural Example
-
-In my environment I set up the following Index Sets:
+In my environment I set up the following Index Sets: 
 
 * Compliance:  These are logs I want to keep for a long time.  Mostly they are the audit logs where permissions, or authentications were actually changed.  E.g.  Active Directory Group membership Changes, Multi-Factor enrollment etc.
   * Samples:  User Create/Delete, OU Changes, Group Membership Changes,
@@ -101,8 +97,8 @@ In my environment I set up the following Index Sets:
   * Retention: 10 days
   * Naming: **MET-**
 
-* Test/Dev:  When you start building more and more pipeline rules, you will inevitably accidentally slam millions of logs into your 5-year retention rule.  Then, when you try to remove just those new, unfiltered entries - you'll then learn you can't delete individual logs - only individual indicies.  I'll save you some Derp moments.  We both know you'll make this mistake, though.  At least I told you so.
-  * Samples:  Anything half-baked.
+* Test/Dev:  When you start building more and more pipeline rules, you will inevitably accidentally slam millions of logs into your 5-year retention rule.  Then, when you try to remove just those new, unfiltered entries - you'll then learn you can't delete individual logs - only individual indicies.  I'll save you some Derp moments.  We both know you'll make this mistake, though.  At least I told you so. 
+  * Samples:  Anything half-baked. 
   * Retention:  3 days (So you can resume Fridays work on a Monday.  Trust me.)
   * Naming: **TEST-**  <-- Yes - its 4 characters instead of three so that its EXTREMELY obviously in a giant list of index sets which ones are still being made.
 
@@ -160,19 +156,19 @@ My real basic flow for a pipeline is:
 
 These are the scripts / configurations the do the actual processing of the fields.  You can pretty much do anything you want to a message at this stage of the game.  
 
-> Pro Tip:  When you first start with GrayLog, you are likely going to build a bunch of 'Extractors' to get the Data you like from a message.  As I learned more, I found I used extractors a LOT less as I found ways to massage most of my messages at this stage.
+>  Pro Tip:  When you first start with GrayLog, you are likely going to build a bunch of 'Extractors' to get the Data you like from a message.  As I learned more, I found I used extractors a LOT less as I found ways to massage most of my messages at this stage.
 
-The most common uses:
+The most common uses: 
   * Drop unwanted messages
   * Combine or Append Fields(i.e. FQDN = Hostname + "." + Domain)
-  * Remove/Rename Fields - Very common activity using Collectors or standardized Sidecar configurations.
+  * Remove/Rename Fields - Very common activity using Collectors or standardized Sidecar configurations. 
 
-#### Examples
+  #### Examples
 
 This rule checks if a message has a field called "Debug" with a value of 5.
 
-```
-  Rule "Remove Debug Logs"
+  ```
+  Rule "Remove 
 when
   has_field("Debug") AND
   to_string($message.Debug) == 5
@@ -183,7 +179,7 @@ end
 
 Another example is modifying message fields.  If you use a collector such as FileBeat, the default configuration will include a bunch of metadata such as the filebeat version, etc.  Also, you may want the ```filebeat_client_IP``` translated into something like ```source``` to standardize your searchs. 
 
-This rule checks that both a ```filebeat_client_IP``` exists and that the value is within a specific IP range (e.g. workstations on the WiFi subnet).  Then it sets two fields accordingly and removes the unwanted remaining fields.
+This rule checks that both a ```filebeat_client_IP``` exists and that the value is within a specific IP range (e.g. workstations on the WiFi subnet).  Then it sets two fields accordingly and removes the unwanted remaining fields. 
 
 ```
 rule "remove and clean filebeat log"
@@ -198,27 +194,80 @@ then
 end
 ```
 
-> PROTIP:  When I build a pipeline rule, I go look at the log and select the fields from the view on the left.  Then I paste into Notepad++ or any advanced text editor.  Then I use the find/replace tool and regex for something like "
+>  PROTIP:  When I build a pipeline rule, I go look at the log and select the fields from the view on the left.  Then I paste into Notepad++ or any advanced text editor.  Then I use the find/replace tool and regex for something like "
 
-```Find all ^;
+```Find all ^; 
 Replace with remove_field\(\";
 Find all $;
 Replace with \)\;
 ```
 
+## Extractors
 
+This is a great way to process a single field.  Extractors are organized per-input so you can carry out actions on a certain field or parse out larger fields into smaller ones.  A simple example is an IIS log.  These come with all the W3C standard fields, so you can create and extractor on that one input, and use Grok / REgex to split it up into all the necessary smaller fields. 
 
+##### Bonus:  What on earth does Grok mean?
 
+This is also a great place to touch on some of these terms that aren't very common in the Windows world. 
 
-## Extractors 
+  * Regular Expressions (Often called Regex)
+     *  Regex is a language used to match queries within a larger string.  It carries a fairly large learning curve, but once mastered you can do some insane things on it.  A really simple example already used in this document includes ```^``` which indicates the start of a line and ```$``` which indicates the end of a line.  Other often used regex expressions are things like ```(a-z){4}``` which means "Match and character between a and z (notice the lowercase), and do it 4 times.  So ```food``` is a match but ```Food``` or ```dog9``` would not match.
+  * Grok
+     * I always describe Grok to others as "Bookmarks for Regex".  It also carries an easy mechanism for discarding, or renaming fields. The basic scheme is %{**GROK_EXPRESSION**:*LABEL*}
+     
+     #### Example: 
+     
+     A message like:
+     
+     ```10.10.20.50 Webfilter Block https://www.reddit.com Non-Productive Resource``` 
+     
+     could be parsed as
+     
+      ```%{IPV4:Source_IP} %{DATA:Category} %{DATA:Action} %{URI:Destionation_URL} %{GREEDYDATA:Reason}```
 
-Extractors are used as the 'Quick and Dirty' method of reworking a message to suit your needs.  You can apply regular expressions (often called RegEx) to a message.  Potentially you can copy or cut contents of a message into additional fields.  Typically, extractors are seen as augmenting the default message parsing schemes on an input.  In fact, Extractors are managed **per input**.  Depending on how you've designed your strategy for inputs, you may want to use extractors to quickly parse a non-standard message type. 
+      This would result in a message looking like this:
 
-#### Example
+     | Field | Data | 
+     |---|---|
+     | Source_IP | 10.10.20.50 | 
+     | Category | Webfilter | 
+     | Action | Block | 
+     | Destination_URL | https://www.reddit.com | 
+     | Reason | Non-Productive Resource | 
 
-Take the message: 
-``` 10.10.100.50 Block Webfilter https://blueteam.ninja Time-wasting and Non-Productive ```
+     Grok makes parsing out messages very easy and has a way lower learning curve than Regex itself.  As you use it more and more, and discover limitations - you'll likely end up learning Regex by accident.  :)
 
-This is not a standard format for a message - so let's make a few assumptions.
+     ## Message Processing Order
 
-## Message Processing Order
+     With a basic understanding of Extractors and Pipeline Processing Rules, you may have already stumbled on a dilemma.  What happens if I have a discrepancy between a pipeline processing rule and an extractor?  Both of them can extract or remove data from a field.  You can make a decision in the global configuration of GrayLog that determines whether messages are handled at the Pipeline level or the Extractor level first.  This is a brilliant option and really helps plans a deployment and architecture model.  Many administrators advise one method or the other but that depends on how you have chosen to design your system overall. 
+     
+     ## Sidecar
+
+     If you want to pull logs from more than 1 of any kind of server Sidecar is a total weapon.  Sidecar is easiest described as a 'Configuration Manager for Log Collectors'.  You install sidecar, ensure it has authentication and network access to the GrayLog api (i.e. port 9000 and an API key) and this allows you to distribute multiple configurations for various types of Log collectors. 
+
+     I typically do this for any server that has more than 1 of the same type.  Most environments have multiple IIS servers, or multiple authentication/Radius servers.  If you want to draw Windows Events, sniffed packets on specific ports (DNS, SIP, DHCP etc) then you are going to get involved in those specific collectors.  Sidecar helps manage those collectors in the sense that you can template the configuration of the various types of collectors, and then create more granular individual configurations and even stop or start the various processes. 
+
+     The limitation, is installing collectors that don't ship with sidecar itself.  The sidecar in Graylog3 contains FileBeat (for flat log files) and WinLogBeat (for Windows Events) with the windows package.  This is enough to get started for sure and become comfortable.  As you progress, you will build and deploy installations for PacketBeat and others - and continue to manage their configurations through the sidecar page.
+
+     Using the Beats family of Collectors allow you to easily create new inputs as you further your variety of log injestion quickly and easily.  Beats is a default input type and requires very little configuration other than ports and SSL information. 
+
+     #### Examples
+        * Sidecar:  "Domain Changes"
+            * Log Collector:  WinLogBeat
+            * Configuration:  Active Directory Events
+            * Purpose:  *Collect specific Event ID like 4720 - User Created, Monitor for anomalous activity.
+
+        * Sidecar:  "DNS Events" 
+          * Log Collector: Packetbeat
+          * Configuration: DNS / Port 53
+          * Purpose:  Collect and normalize DNS events, Monitor for anomalous values.
+
+        * Sidecar:  "IIS Events" 
+          * Log Collector: Filebeat
+          * Configuration: %systemroom%/inetpub/LogFiles/*/*.log
+          * Purpose:  Monitor for Response Code (5xx, 4xx) and anomalous volumes.
+
+## Closing out
+
+This wraps up my best "Brief Overview" of the crazy extent of GrayLog.  Drop a disqus line below and let me know what you think. You can also find me asking slightly less 'derpy' questions than a few months ago on the GrayLog Community forums.  I even chime in once in awhile with my $0.02. 
+
