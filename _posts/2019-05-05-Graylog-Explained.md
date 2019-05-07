@@ -1,6 +1,6 @@
 ---
 title: Draft - Graylog Explained
-date: {}
+date: 2019-05-06 21:30
 categories:
   - blog
 tags:
@@ -9,6 +9,7 @@ tags:
   - Logging
 published: true
 ---
+
 # GrayLog.  Explained 
 ## Amazing Open-Source Log Management for your everyday Windows Ninja 
 
