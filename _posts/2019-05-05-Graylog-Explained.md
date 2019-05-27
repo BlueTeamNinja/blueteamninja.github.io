@@ -23,7 +23,7 @@ Here we are.
 
 GrayLog.
 
-I first stumbled on GrayLog about a year ago.  I'm not going to lie, I was overwhelmed.  Like, well and truly overwhelmed.  I'm a competent Linux User - but a far cry from a seasoned Administrator.  I can easily drive 1,000s of Workstations and hundreds of Servers (I hope; it's what I do during the day) - but GrayLog just perplexed me.  Installation and basic configuration was easy enough, but *how do I **design** this thing?*
+I first stumbled on GrayLog about a year ago.  I'm not going to lie, I was overwhelmed.  Like, well and truly overwhelmed.  I'm a competent Linux User - but a far cry from a seasoned Administrator.  I can easily drive 1,000s of Windows Workstations and hundreds of Windows Servers (I hope; it's what I do during the day) - but GrayLog just perplexed me.  Installation and basic configuration was easy enough, but *how do I **design** this thing?*  *How do I view Windows Logs in this beast?*
 
 Now that I have wrestled most of the concepts down I wanted to share what I have learned.
 
