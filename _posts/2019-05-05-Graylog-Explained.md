@@ -253,6 +253,7 @@ This is also a great place to touch on some of these terms that aren't very comm
      Using the Beats family of Collectors allow you to easily create new inputs as you further your variety of log injestion quickly and easily.  Beats is a default input type and requires very little configuration other than ports and SSL information. 
 
      #### Examples
+     
         * Sidecar:  "Domain Changes"
             * Log Collector:  WinLogBeat
             * Configuration:  Active Directory Events
