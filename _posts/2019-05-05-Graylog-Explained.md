@@ -1,5 +1,5 @@
 ---
-title: Draft - Graylog Explained
+title: Graylog Explained
 date: 2019-05-06 21:30
 categories:
   - blog
