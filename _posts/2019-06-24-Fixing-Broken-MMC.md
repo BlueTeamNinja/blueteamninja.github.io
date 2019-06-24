@@ -1,3 +1,16 @@
+---
+title: Broken MMC
+date: 2019-06-24 13:30
+categories:
+  - blog
+tags:
+  - troubleshooting
+  - Windows
+  - Logging
+  - Event Viewer
+published: true
+---
+
 So.  Just like me, you were trying to do some more log enrichment and massage some of those Windows logs back into their proper docile form. 
 That is exactly when MMC and your beloved Event Viewer crapped itself.  
 
