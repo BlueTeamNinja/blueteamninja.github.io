@@ -11,7 +11,7 @@ tags:
 published: true
 ---
 
-*** MMC has detected an error and will unload the snap-in
+### MMC has detected an error and will unload the snap-in
 
 So.  Just like me, you were trying to do some more log enrichment and massage some of those Windows logs back into their proper docile form. 
 That is exactly when MMC and your beloved Event Viewer crapped itself.  
