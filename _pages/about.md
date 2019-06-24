@@ -3,6 +3,21 @@ permalink: /about/
 title: "About"
 ---
 
-Tempor velit sint sunt ipsum tempor enim ad qui ullamco. Est dolore anim ad velit duis dolore minim sunt aliquip amet commodo labore. Ut eu pariatur aute ea aute excepteur laborum. Esse ea esse excepteur minim mollit qui cillum excepteur ex dolore magna. Labore deserunt fugiat incididunt incididunt sint ea. Consequat dolore aute laboris quis proident quis non et est consectetur ex eiusmod sit culpa.
+Abe has been kicking around since he started looking after the IT for a discount bookstore in Dirtfarm, Canada when he was 14. He has a bucketload of certifications and considers most of them boring. 
 
-Cupidatat ea do et in excepteur in. Ad nostrud ut est esse eu duis ea sunt eiusmod. Aliquip tempor veniam sint elit fugiat. Velit incididunt laboris amet incididunt labore dolore irure velit excepteur commodo deserunt laborum. Consectetur eu fugiat veniam veniam Lorem labore magna eiusmod. Ea occaecat reprehenderit pariatur consectetur minim labore ut aliquip.
+Abe has self-proclaimed **huge** range of experience from Armed Forces, Retail, Private Consulting, and Government. 
+
+His specialties (in strict order of relevance to the high-tide of the moonbeams and migratory pattern of the Pink Newfoundland Dolphin):
+ - Hardware Deployments
+    * Firewalls
+    * Load Balancers
+    * Inline Network Sandbox
+    * Proxy
+ - Solution Deployments
+    * Skype For Business
+    * Several EDR / AntiMalware Solutions
+    * DirectAccess (Stop 'thinking about it and throw out your VPN')
+    * VMWare Horizon View - VDI and Physical
+    * Asset Management
+ - Scripting & Automation
+    * MOAR POWERSHELL
