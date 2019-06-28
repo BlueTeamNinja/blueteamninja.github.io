@@ -20,7 +20,7 @@ description: >- # this means to ignore newlines until "baseurl:"
   top-hat and throwing stars.  Stay for a bit and have a gaff. 
 #baseurl: 
 url: https://blueteam.ninja
-#twitter_username: username
+twitter_username: BigAbe20
 github_username: BlueTeamNinja
 minimal_mistakes_skin: dark
 search: true
