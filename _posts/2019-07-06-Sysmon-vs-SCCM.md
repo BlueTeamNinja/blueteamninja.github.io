@@ -17,7 +17,7 @@ published: true
 
 #### By Abe
 
-If you are a boring person and you're just here for the solution: https://github.com/BlueTeamNinja/Tools/tree/master/Installers/Sysmon
+If you are a boring person and you're just here for the solution: [I got you, fam](https://github.com/BlueTeamNinja/Tools/tree/master/Installers/Sysmon)
 
 If you are slightly less boring and just want to know how - here you are: 
 
@@ -29,22 +29,14 @@ Create an SCCM Application that:
 5. [**Hardcore Mode**]
 
     a. Tattooed Registry
-
     b. Compare PathName of EXE from Service to known version
-
     c. Compare running config to assigned config
 
-Are you even more boring?  
-This road leads to candy (and working installation code) 
-
-PSADT Edition: https://github.com/BlueTeamNinja/Tools/blob/master/PSADT_Tools/Deploy-Sysmon.ps1
-Simple Posh Edition: 
 
 I had the most lovely oppurtunity of deciding whether or not to deploy Sysmon to a larger scale of PCs.  I turned to my trusty copy of SCCM and decided to push out Sysmon.  It repeatedly failed.  So I built a simple PowerShell script.  More fail. 
 
 Then I got down and dirty and pushed it out via the trusty PSADT - which isn't my usual flow, but I figured it wouldn't hurt.  **MORE FAIL**.  At this point, the headknocking begins. 
-
-Oddly, running the same identical PowerShell scripts or command line installations worked perfectly in the console.  
+Oddly, running the same identical PowerShell script or command line installers worked perfectly in the console.  
 Even more bizarre, they *worked perfectly running as **SYSTEM!!!***
 
 Here is another massive oddity.  My actual event collector was getting logs from about 15-20% of the clients in the deployment collection.  
