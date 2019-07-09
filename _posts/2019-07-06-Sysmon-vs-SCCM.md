@@ -21,7 +21,8 @@ If you are a boring person and you're just here for the solution: [I got you, fa
 
 If you are slightly less boring and just want to know how - here you are: 
 
-Create an SCCM Application that: 
+Create an SCCM Application that:
+
 1. Copies Sysmon(64) to a Directory outside of ```%SystemRoot%``` aka **NOT** *'C:\Windows\'* 
 2. Sets the **TMP** Environment Variable to the directory above.  Note the lack of an 'E'
 3. Install sysmon e.g. ```sysmon.exe -accepteula -i "C:\Temp\config.xml"```
@@ -34,7 +35,7 @@ Create an SCCM Application that:
 
 I had the most lovely oppurtunity of deciding whether or not to deploy Sysmon to a larger scale of PCs.  I turned to my trusty copy of SCCM and decided to push out Sysmon.  It repeatedly failed.  So I built a simple PowerShell script.  More fail.  The failure:  Sysmon deployed - but nothing happening.  Service is there, it is running - and then eventually it would be gone.  
 
-Then I got down and dirty and pushed it out via the trusty PSADT - which isn't my usual flow, but I figured it wouldn't hurt.  **MORE FAIL**.  At this point, the headknocking begins. 
+Then I got down and dirty and pushed it out via the trusty PSADT - which isn't my usual flow, but I figured it wouldn't hurt.  **MORE FAIL**.  At this point, the headknocking begins.
 Oddly, running the same identical PowerShell script or command line installers worked perfectly in the console.  
 Even more bizarre, they *worked perfectly running as **SYSTEM!!!***
 
@@ -49,7 +50,7 @@ I could NOT for the life of me figure out what was going on.  The service was in
 Basically - collect any variables you want to discover during an SCCM deployment and save them to a file somewhere, or display them onscreen, or ship them to an http listener.  Whatever gets your goat going.
 
 ```PowerShell
-// This is how I type my code all pretty for you great folks. 
+// This is how I type my code all pretty for you great folks.
 
 Get-WmiObject -class win32_service | Where-Object {$_.Name -like "sysmon"} | Select-object -expandProperty PathName
 ```
@@ -75,9 +76,10 @@ Just kidding.  You know better, I know better.  Shorthand those 1-liners, kids. 
 ```Powershell
 gci env: | ? Value -like "*CCMTEMP*"
 ```
-# BAM
 
-```
+## BAM
+
+```text
 Name                           Value
 ----                           -----
 TMP                            C:\Windows\CCMTEMP
