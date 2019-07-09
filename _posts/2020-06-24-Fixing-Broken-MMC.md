@@ -13,6 +13,8 @@ published: true
 
 ### MMC has detected an error and will unload the snap-in
 
+#### June 2019 Edition of WHAT IS WRONG WITH MMC?
+
 So.  Just like me, you were trying to do some more log enrichment and massage some of those Windows logs back into their proper docile form. 
 That is exactly when MMC and your beloved Event Viewer crapped itself.  
 
@@ -20,7 +22,7 @@ There are a number of fixes out there, but most of them revolve around custom vi
 
 Run powershell as an admin: 
 
-```
+```powershell
 get-process mmc | stop-process
 cd '\ProgramData\Microsoft\Event Viewer\SubscriptionFilters'
 start .
