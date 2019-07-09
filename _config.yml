@@ -48,6 +48,12 @@ include:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
+# Added by Abe - and probably wrecked it
+
+comments:
+  provider: "disqus"
+  disqus:
+    shortname: "blueteam-ninja"
 
 # Plugins (previously gems:)
 plugins:
