@@ -38,11 +38,12 @@ Ditto for:
 
 I use [Pocket Casts](https://play.pocketcasts.com) and love pausing in the car and resuming in the browser.  I'm sure there are other things that do the thing that I want my things to do, but that's not my thing.... or something.
 
- ===
+===
 
  Now you have Games & Apps, and IM. 
  This is also my sole purpose of the browser bar.  Add your selection of the above to the browser bar so you can start your day with a <kbd>Right Click</kbd> + `Open All (5)` and begin your day right.  The phone is at 100% by coffee time. 
 
- ## Step 4:  Profit. 
+
+## Step 4:  Profit. 
 
  Thanks for tuning in.  Insert your favourite memes here and do not fold or bend this document. 
