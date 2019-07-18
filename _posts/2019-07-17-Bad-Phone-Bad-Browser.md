@@ -11,7 +11,9 @@ published: true
 
 # You've been using a Phone and Browser wrong this WHOLE TIME
 
-Here is how you spend the whole day with your phone on the charger and not lose the plot. 
+Here is how you spend the whole day with your phone on the charger and not lose the plot.  
+
+Following these basics you can disconnect from most of your mobile interruptions and actually look people in the eye on an elevator again.  If it's been awhile, there's a very real chance you'll feel mildly life a psychopath.
 
 ## Step 1:  Chrome Remote Desktop
 
@@ -24,7 +26,9 @@ Leave your favourite games running in a full instance of Bluestacks on the Beast
 ## Step 2:  SMS in the browser
 
 Get the official Google (seriously, I have nothing to do with them) Messages app.  
-[Then Rock it](https://messages.android.com)
+[Then Rock it](https://messages.android.com). You can stay caught up on your messages without reaching into your pocket.
+
+#### Like a boss
 
 ## Step 2A:  More IM in the browser
 
