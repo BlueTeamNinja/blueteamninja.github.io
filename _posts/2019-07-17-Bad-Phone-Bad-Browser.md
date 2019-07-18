@@ -21,7 +21,7 @@ Not the greatest remote solution in the world but you can use it from anywhere s
 
 ## Step 1A:  Bluestacks
 
-Leave your favourite games running in a full instance of Bluestacks on the Beast Gaming/CAD/Server you have in your basement. 
+Leave your favourite games running in a full instance of Bluestacks on the Beast Gaming/CAD/Server you have in your basement.  Then just [remote into](HTTPS://remotedesktop.google.com) your desktop using Chrome.  Those Clans won't Clash themselves.
 
 ## Step 2:  SMS in the browser
 
