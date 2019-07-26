@@ -4,9 +4,9 @@ permalink: /services/
 layout: home
 ---
 
-# Training Services
+## Training Services
 
-### Coming Soon...
+### Coming Soon
 
 Want to go from zero to hero on GrayLog?
 We're busily packaging up a 5-day course designed for those coming from a Windows background.
