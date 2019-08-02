@@ -43,7 +43,7 @@ The most fundamental pieces to me are, in no order:
 * [Streams](#streams)
 * [Pipelines](#pipelines)
 * [Pipeline Processing Rules](#pipeline-processing-rules)
-* [Extractors](#extractors) (Bonus: [Grok? Huh?](#bonus-what-on-earth-does-grok-mean))
+* [Extractors](#extractors) (Bonus: [Grok? Huh?](#what-does-grok-mean))
 * [Message Processing Order](#message-processing-order)
 * [SideCar](#sidecar)
 
@@ -207,7 +207,7 @@ Replace with \)\;
 
 This is a great way to process a single field.  Extractors are organized per-input so you can carry out actions on a certain field or parse out larger fields into smaller ones.  A simple example is an IIS log.  These come with all the W3C standard fields, so you can create and extractor on that one input, and use Grok / REgex to split it up into all the necessary smaller fields. 
 
-##### Bonus:  What on earth does Grok mean?
+##### What does Grok mean
 
 This is also a great place to touch on some of these terms that aren't very common in the Windows world. 
 
@@ -216,7 +216,7 @@ This is also a great place to touch on some of these terms that aren't very comm
   * Grok
      * I always describe Grok to others as "Bookmarks for Regex".  It also carries an easy mechanism for discarding, or renaming fields. The basic scheme is %{**GROK_EXPRESSION**:*LABEL*}
      
-     #### Example: 
+#### Example: 
      
      A message like:
      
@@ -238,11 +238,11 @@ This is also a great place to touch on some of these terms that aren't very comm
 
      Grok makes parsing out messages very easy and has a way lower learning curve than Regex itself.  As you use it more and more, and discover limitations - you'll likely end up learning Regex by accident.  :)
 
-     ## Message Processing Order
+## Message Processing Order
 
      With a basic understanding of Extractors and Pipeline Processing Rules, you may have already stumbled on a dilemma.  What happens if I have a discrepancy between a pipeline processing rule and an extractor?  Both of them can extract or remove data from a field.  You can make a decision in the global configuration of GrayLog that determines whether messages are handled at the Pipeline level or the Extractor level first.  This is a brilliant option and really helps plans a deployment and architecture model.  Many administrators advise one method or the other but that depends on how you have chosen to design your system overall. 
      
-     ## Sidecar
+## Sidecar
 
      If you want to pull logs from more than 1 of any kind of server Sidecar is a total weapon.  Sidecar is easiest described as a 'Configuration Manager for Log Collectors'.  You install sidecar, ensure it has authentication and network access to the GrayLog api (i.e. port 9000 and an API key) and this allows you to distribute multiple configurations for various types of Log collectors. 
 
