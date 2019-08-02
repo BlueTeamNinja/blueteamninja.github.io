@@ -40,7 +40,7 @@ The most fundamental pieces to me are, in no order:
 
 * [Inputs](#inputs)
 * [Log Collectors & Beats](#log-collectors-and-beats)
-* [Indices (Index Sets)](#indices-index-sets)
+* [Indices (Index Sets)](#indices)
 * [Streams](#streams)
 * [Pipelines](#pipelines)
 * [Pipeline Processing Rules](#pipeline-processing-rules)
@@ -218,59 +218,58 @@ This is also a great place to touch on some of these terms that aren't very comm
      * I always describe Grok to others as "Bookmarks for Regex".  It also carries an easy mechanism for discarding, or renaming fields. The basic scheme is %{**GROK_EXPRESSION**:*LABEL*}
      
 #### Example: 
-     
-     A message like:
-     
-     ```10.10.20.50 Webfilter Block https://www.reddit.com Non-Productive Resource``` 
-     
-     could be parsed as
-     
-      ```%{IPV4:Source_IP} %{DATA:Category} %{DATA:Action} %{URI:Destionation_URL} %{GREEDYDATA:Reason}```
+    
+A message like:
 
-      This would result in a message looking like this:
+```10.10.20.50 Webfilter Block https://www.reddit.com Non-Productive Resource``` 
 
-     | Field | Data | 
-     |---|---|
-     | Source_IP | 10.10.20.50 | 
-     | Category | Webfilter | 
-     | Action | Block | 
-     | Destination_URL | https://www.reddit.com | 
-     | Reason | Non-Productive Resource | 
+could be parsed as
 
-     Grok makes parsing out messages very easy and has a way lower learning curve than Regex itself.  As you use it more and more, and discover limitations - you'll likely end up learning Regex by accident.  :)
+```%{IPV4:Source_IP} %{DATA:Category} %{DATA:Action} %{URI:Destionation_URL} %{GREEDYDATA:Reason}```
+
+This would result in a message looking like this:
+
+| Field | Data | 
+|---|---|
+| Source_IP | 10.10.20.50 | 
+| Category | Webfilter | 
+| Action | Block | 
+| Destination_URL | https://www.reddit.com | 
+| Reason | Non-Productive Resource | 
+
+Grok makes parsing out messages very easy and has a way lower learning curve than Regex itself.  As you use it more and more, and discover limitations - you'll likely end up learning Regex by accident.  :)
 
 ## Message Processing Order
 
-     With a basic understanding of Extractors and Pipeline Processing Rules, you may have already stumbled on a dilemma.  What happens if I have a discrepancy between a pipeline processing rule and an extractor?  Both of them can extract or remove data from a field.  You can make a decision in the global configuration of GrayLog that determines whether messages are handled at the Pipeline level or the Extractor level first.  This is a brilliant option and really helps plans a deployment and architecture model.  Many administrators advise one method or the other but that depends on how you have chosen to design your system overall. 
-     
+With a basic understanding of Extractors and Pipeline Processing Rules, you may have already stumbled on a dilemma.  What happens if I have a discrepancy between a pipeline processing rule and an extractor?  Both of them can extract or remove data from a field.  You can make a decision in the global configuration of GrayLog that determines whether messages are handled at the Pipeline level or the Extractor level first.  This is a brilliant option and really helps plans a deployment and architecture model.  Many administrators advise one method or the other but that depends on how you have chosen to design your system overall. 
+    
 ## Sidecar
 
-     If you want to pull logs from more than 1 of any kind of server Sidecar is a total weapon.  Sidecar is easiest described as a 'Configuration Manager for Log Collectors'.  You install sidecar, ensure it has authentication and network access to the GrayLog api (i.e. port 9000 and an API key) and this allows you to distribute multiple configurations for various types of Log collectors. 
+If you want to pull logs from more than 1 of any kind of server Sidecar is a total weapon.  Sidecar is easiest described as a 'Configuration Manager for Log Collectors'.  You install sidecar, ensure it has authentication and network access to the GrayLog api (i.e. port 9000 and an API key) and this allows you to distribute multiple configurations for various types of Log collectors. 
 
-     I typically do this for any server that has more than 1 of the same type.  Most environments have multiple IIS servers, or multiple authentication/Radius servers.  If you want to draw Windows Events, sniffed packets on specific ports (DNS, SIP, DHCP etc) then you are going to get involved in those specific collectors.  Sidecar helps manage those collectors in the sense that you can template the configuration of the various types of collectors, and then create more granular individual configurations and even stop or start the various processes. 
+I typically do this for any server that has more than 1 of the same type.  Most environments have multiple IIS servers, or multiple authentication/Radius servers.  If you want to draw Windows Events, sniffed packets on specific ports (DNS, SIP, DHCP etc) then you are going to get involved in those specific collectors.  Sidecar helps manage those collectors in the sense that you can template the configuration of the various types of collectors, and then create more granular individual configurations and even stop or start the various processes. 
 
-     The limitation, is installing collectors that don't ship with sidecar itself.  The sidecar in Graylog3 contains FileBeat (for flat log files) and WinLogBeat (for Windows Events) with the windows package.  This is enough to get started for sure and become comfortable.  As you progress, you will build and deploy installations for PacketBeat and others - and continue to manage their configurations through the sidecar page.
+The limitation, is installing collectors that don't ship with sidecar itself.  The sidecar in Graylog3 contains FileBeat (for flat log files) and WinLogBeat (for Windows Events) with the windows package.  This is enough to get started for sure and become comfortable.  As you progress, you will build and deploy installations for PacketBeat and others - and continue to manage their configurations through the sidecar page.
 
-     Using the Beats family of Collectors allow you to easily create new inputs as you further your variety of log injestion quickly and easily.  Beats is a default input type and requires very little configuration other than ports and SSL information. 
+Using the Beats family of Collectors allow you to easily create new inputs as you further your variety of log injestion quickly and easily.  Beats is a default input type and requires very little configuration other than ports and SSL information. 
 
-     #### Examples
-     
-        * Sidecar:  "Domain Changes"
-            * Log Collector:  WinLogBeat
-            * Configuration:  Active Directory Events
-            * Purpose:  *Collect specific Event ID like 4720 - User Created, Monitor for anomalous activity.
+#### Examples
 
-        * Sidecar:  "DNS Events" 
-          * Log Collector: Packetbeat
-          * Configuration: DNS / Port 53
-          * Purpose:  Collect and normalize DNS events, Monitor for anomalous values.
+* Sidecar:  "Domain Changes"
+    * Log Collector:  WinLogBeat
+    * Configuration:  Active Directory Events
+    * Purpose:  *Collect specific Event ID like 4720 - User Created, Monitor for anomalous activity.
 
-        * Sidecar:  "IIS Events" 
-          * Log Collector: Filebeat
-          * Configuration: %systemroom%/inetpub/LogFiles/*/*.log
-          * Purpose:  Monitor for Response Code (5xx, 4xx) and anomalous volumes.
+* Sidecar:  "DNS Events" 
+  * Log Collector: Packetbeat
+  * Configuration: DNS / Port 53
+  * Purpose:  Collect and normalize DNS events, Monitor for anomalous values.
+
+* Sidecar:  "IIS Events" 
+  * Log Collector: Filebeat
+  * Configuration: %systemroom%/inetpub/LogFiles/*/*.log
+  * Purpose:  Monitor for Response Code (5xx, 4xx) and anomalous volumes.
 
 ## Closing out
 
 This wraps up my best "Brief Overview" of the crazy extent of GrayLog.  Drop a disqus line below and let me know what you think. You can also find me asking slightly less 'derpy' questions than a few months ago on the GrayLog Community forums.  I even chime in once in awhile with my $0.02. 
-
