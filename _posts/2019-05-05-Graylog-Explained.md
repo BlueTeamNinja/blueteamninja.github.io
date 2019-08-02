@@ -37,15 +37,15 @@ This is where I struggled the most in figuring out how to really unleash the pow
 
 The most fundamental pieces to me are, in no order:
 
-* [Inputs](#Inputs)
-* [Log Collectors & Beats](#Log-Collectors-and-Beats)
-* [Indices (Index Sets)](#Indices-Index-Sets)
-* [Streams](#Streams)
-* [Pipelines](#Pipelines)
-* [Pipeline Processing Rules](#Pipeline-Processing-Rules)
-* [Extractors](#Extractors) (Bonus: [Grok? Huh?](#Bonus-What-on-earth-does-Grok-mean))
-* [Message Processing Order](#Message-Processing-Order)
-* [SideCar](#Sidecar)
+* [Inputs](#inputs)
+* [Log Collectors & Beats](#log-collectors-and-beats)
+* [Indices (Index Sets)](#indices-index-sets)
+* [Streams](#streams)
+* [Pipelines](#pipelines)
+* [Pipeline Processing Rules](#pipeline-processing-rules)
+* [Extractors](#extractors) (Bonus: [Grok? Huh?](#bonus-what-on-earth-does-grok-mean))
+* [Message Processing Order](#message-processing-order)
+* [SideCar](#sidecar)
 
 ## Inputs
 
