@@ -40,7 +40,7 @@ The most fundamental pieces to me are, in no order:
 
 * [Inputs](#inputs)
 * [Log Collectors & Beats](#log-collectors-and-beats)
-* [Indices (Index Sets)](#indices)
+* [Indices (Index Sets)](#indices--index-sets)
 * [Streams](#streams)
 * [Pipelines](#pipelines)
 * [Pipeline Processing Rules](#pipeline-processing-rules)
@@ -143,6 +143,7 @@ My real basic flow for a pipeline is:
 4. *Any further special processing *
 
 #### Example
+
 *Stages default at 0, but you can use whatever scheme you want.  Sometimes a 100,200,300 rule makes sense in case you want to drop something in between without further editing*. 
 
   * Firewall Pipeline
