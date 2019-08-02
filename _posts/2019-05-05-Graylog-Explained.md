@@ -10,7 +10,8 @@ tags:
 published: true
 ---
 
-# GrayLog.  Explained 
+# Let's talk logs, shall we?
+
 ## Amazing Open-Source Log Management for your everyday Windows Ninja 
 
 GrayLog is a Log Management platform.  It's primary purpose is to injest large amounts of log data, then process and store it according to your design.  The Web interface built on top of it allows you to search through millions of log records and quickly retrieve your information. You can also sort it into visually appealling dashboards with charts, tables, trend indicators and more for great insight and analysis.  
