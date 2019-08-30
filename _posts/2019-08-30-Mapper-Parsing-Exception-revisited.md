@@ -75,12 +75,12 @@ Next step is to add that file to the custom index mapping:
 
 But NO!  THE GODS HAVE OTHER PLANS FOR YOU!
 
-`
+```
 {
   "error" : "Content-Type header [application/x-www-form-urlencoded] is not supported",
   "status" : 406
 }
-`
+```
 
 ### Apply the map 
 Add the custom mapping take 2: `curl -X PUT -d '@rt-troubleshoot.json' 'http://localhost:9200/_template/graylog-custom-mapping?pretty' -H 'Content-Type: application/json'`
