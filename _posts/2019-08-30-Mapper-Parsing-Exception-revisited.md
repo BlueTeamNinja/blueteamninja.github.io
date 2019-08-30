@@ -8,7 +8,7 @@ tags:
   - graylog
   - Logging
   - Troubleshooting
-published: false
+published: true
 ---
 
 # ARGH!  Parser Exception!
@@ -82,13 +82,28 @@ curl -X PUT -d '@rt-troubleshoot.json' 'http://localhost:9200/_template/graylog-
 ```
 
 I always rotate the index just to be safe.  
-Now you'll see the ugly little *rt* field show up with its silly date format.  I'm not above name-shaming, this is Trend Micro and they are
-beyond notorious for the ugliest syslog messaging I have to deal with.  They are great at fixing things but you eventually get tired of sending
-in more messages. 
-Proof:  Here is an [EASY](https://help.deepsecurity.trendmicro.com/10/0/Events-Alerts/syslog-parsing.html) Trend Micro Syslog document.  They have much more convuluted ones. 
-Also notorious for doing JSON INSIDE of K=V messages INSIDE of CEF. 
 
-Back to the game. 
+Now you'll see the ugly little *rt* field show up with its silly date format.  I'm not above name-shaming, this is Trend Micro and they arebeyond notorious for the ugliest syslog messaging I have to deal with.  They are great at fixing things but you eventually get tired of sending in more messages. 
 
+Proof:  Here is an [EASY](https://help.deepsecurity.trendmicro.com/10/0/Events-Alerts/syslog-parsing.html) Trend Micro Syslog document.  They have much more convoluted ones. Also notorious for doing JSON INSIDE of K=V messages INSIDE of CEF. Not kidding.
 
+I digress.  Back to the game. 
 
+Once you have done the above, you can simply search for your funky field `_exists_:rt` and go find the guilty culprit.  
+
+For posterity - this is the pipeline rule I applied: 
+```
+rule "Cleanup - Trend DDI Date"
+
+when
+    has_field("rt") AND 
+    to_string($message.dvc) == "10.25.100.124"
+then
+    let new_date = parse_date(
+        value: to_string($message.rt), 
+        pattern: "MMM dd yyyy HH:mm:ss 'GMT'Z"); 
+   // This particular product ships logs at intervals - so I want to replace the timestamp with this rt field
+    set_field("timestamp", new_date); 
+    remove_field("rt");
+end
+```
