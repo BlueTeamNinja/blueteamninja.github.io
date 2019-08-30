@@ -35,14 +35,23 @@ I know only 2 things:
 I searched for other logs with rt and I had a few wildly different sources so that didn't help me at all either. 
 
 This means we have to blindly fix it and go look for the silly box that is dumping in a date format that elastic doesn't like. 
-### Easy way
+## The Problem
 
-Create a custom index map to text so the parser can go back to licking the glue out of the jar. 
+1. There is a field called rt that sends logs in the format `AUG 30 2019 15:30:00 GMT-0400` and parsing the date fails.
+2. I have no idea where that log is coming from to apply the proper logic and parsing.
+
+
+## The Fix
+### Force the field type to a string
+
+Create a custom index map that maps *rt* to text so the parser can go back to licking the glue out of the jar. 
 
 I found a few guides on this but they were a bit out of date. 
-I can tell from the error I'm looking for index graylog_159 so I VI'd this file: 
+I can tell from the error I'm looking for index *graylog_159* so I VI'd this file.  
 
-* Note the `"type" : "text"` line.  A lot of guides have "String" but ES has sent that packing in favour of 'Text' or 'Keyword'. 
+> Protips: 
+  * The template name is graylog_* to match graylog_159 IN MY EXAMPLE - don't just blindly copy/paste, use your own index name.
+  * The `"type" : "text"` line.  A lot of guides have `"String"` but ES has sent that packing in favour of `'Text'` or `'Keyword'`. 
 
 ```
 $vi rt-troubleshoot.json
@@ -75,7 +84,7 @@ But NO!  THE GODS HAVE OTHER PLANS FOR YOU!
 }
 ```
 
-### Easy fix. 
+### Apply the map 
 Add the custom mapping take 2:
 ```
 curl -X PUT -d '@rt-troubleshoot.json' 'http://localhost:9200/_template/graylog-custom-mapping?pretty' -H 'Content-Type: application/json'
@@ -83,21 +92,26 @@ curl -X PUT -d '@rt-troubleshoot.json' 'http://localhost:9200/_template/graylog-
 
 I always rotate the index just to be safe.  
 
+### Find the culprit(s)
+
+Once you have done the above, you can simply search for your funky field `_exists_:rt` and go find the guilty culprit.  
+
 Now you'll see the ugly little *rt* field show up with its silly date format.  I'm not above name-shaming, this is Trend Micro and they arebeyond notorious for the ugliest syslog messaging I have to deal with.  They are great at fixing things but you eventually get tired of sending in more messages. 
 
 Proof:  Here is an [EASY](https://help.deepsecurity.trendmicro.com/10/0/Events-Alerts/syslog-parsing.html) Trend Micro Syslog document.  They have much more convoluted ones. Also notorious for doing JSON INSIDE of K=V messages INSIDE of CEF. Not kidding.
 
 I digress.  Back to the game. 
 
-Once you have done the above, you can simply search for your funky field `_exists_:rt` and go find the guilty culprit.  
+## MY fix
 
-For posterity - this is the pipeline rule I applied: 
+For posterity - this is the pipeline rule I applied - I used an arbitrary `dvc == 10.10.10.10` for an example, use your own filtering logic.
+
 ```
 rule "Cleanup - Trend DDI Date"
 
 when
     has_field("rt") AND 
-    to_string($message.dvc) == "10.25.100.124"
+    to_string($message.dvc) == "10.10.10.10"
 then
     let new_date = parse_date(
         value: to_string($message.rt), 
@@ -107,3 +121,9 @@ then
     remove_field("rt");
 end
 ```
+
+### Clean up the custom index map
+
+`curl -X DELETE 'http://localhost:9200/_template/graylog-custom-mapping?pretty' -H 'Content-Type: application/json'`
+
+Then go back to that weird V-finger thing kids are doing these days.  Apparently it's cooler than dabbing.  So they told me when I was screaming and dabbing while checking out at Home Depot. 
