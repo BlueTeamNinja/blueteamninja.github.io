@@ -71,9 +71,7 @@ $vi rt-troubleshoot.json
 
 Next step is to add that file to the custom index mapping: 
 
-`
-curl -X PUT -d '@rt-troubleshoot.json' 'http://localhost:9200/_template/graylog-custom-mapping?pretty'
-`
+`curl -X PUT -d '@rt-troubleshoot.json' 'http://localhost:9200/_template/graylog-custom-mapping?pretty'`
 
 But NO!  THE GODS HAVE OTHER PLANS FOR YOU!
 
@@ -85,10 +83,7 @@ But NO!  THE GODS HAVE OTHER PLANS FOR YOU!
 `
 
 ### Apply the map 
-Add the custom mapping take 2:
-`
-curl -X PUT -d '@rt-troubleshoot.json' 'http://localhost:9200/_template/graylog-custom-mapping?pretty' -H 'Content-Type: application/json'
-`
+Add the custom mapping take 2: `curl -X PUT -d '@rt-troubleshoot.json' 'http://localhost:9200/_template/graylog-custom-mapping?pretty' -H 'Content-Type: application/json'`
 
 I always rotate the index just to be safe.  
 
