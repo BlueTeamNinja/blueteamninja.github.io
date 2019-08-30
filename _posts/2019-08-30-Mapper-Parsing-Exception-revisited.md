@@ -24,9 +24,9 @@ when you pull up your Overview page in Graylog and see a bunch of suck.
 
 A lot of times you can get a clue from the field names but in this case I had no idea.  This was the message: 
 
-```
+`
 {"type":"mapper_parsing_exception","reason":"failed to parse field [rt] of type [date] in document with id '67b4e3f0-cb49-11e9-815d-005056aed827'","caused_by":{"type":"illegal_argument_exception","reason":"Invalid format: \"Aug 30 2019 13:12:29 GMT-04:00\""}}
-```
+`
 
 I know only 2 things: 
 1.  It's a fieldname of *rt*
@@ -71,24 +71,24 @@ $vi rt-troubleshoot.json
 
 Next step is to add that file to the custom index mapping: 
 
-```
+`
 curl -X PUT -d '@rt-troubleshoot.json' 'http://localhost:9200/_template/graylog-custom-mapping?pretty'
-```
+`
 
 But NO!  THE GODS HAVE OTHER PLANS FOR YOU!
 
-```
+`
 {
   "error" : "Content-Type header [application/x-www-form-urlencoded] is not supported",
   "status" : 406
 }
-```
+`
 
 ### Apply the map 
 Add the custom mapping take 2:
-```
+`
 curl -X PUT -d '@rt-troubleshoot.json' 'http://localhost:9200/_template/graylog-custom-mapping?pretty' -H 'Content-Type: application/json'
-```
+`
 
 I always rotate the index just to be safe.  
 
