@@ -1,3 +1,18 @@
+---
+title: Speedy, Dirty DNS & Port scan
+date: 2019-10-29 21:30
+categories:
+  - blog
+tags:
+  - Windows
+  - Powershell
+  - DNS
+published: true
+---
+
+# I made a thing
+## Exactly what the title says.
+
 It's a native powershell/.net zone transfer... without the zone transfer.  It's on [GitHub](https://github.com/BlueTeamNinja/Tools/blob/master/Network%20Tools/Get-DNSHostRecords.ps1)
 
 I feel like this should turn into `IMAT:`
