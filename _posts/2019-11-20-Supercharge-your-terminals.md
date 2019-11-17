@@ -8,15 +8,21 @@ tags:
   - Console
   - Powershell
   - Random Ninjitsu
-published: false
+published: true
 ---
 
 # Juice your Shell!
 
-###### Be the hero the world needs
+###### Be the hero your systems need you to be
 ![](2019-11-17-14-05-46.png)
 
 The *nix crew has had the fun for WAY too long.  I use Yakuake (Non-gnome) or Guake (Gnome) for a single reason:  Quake-style slider.  Not only because its unbelievably handy - but it fondly reminds me of my youth where I could smash any internet stranger in a Rail Arena or Rocket in Quake 2.  Oh... youth is wasted on the young. 
+
+Yes... I even map it to a variation of <kbd>`</kbd>.  
+
+Not that I have ADD, but I'm pretty sure I was using this site 20 years ago to find [Quake Servers](http://q2servers.com/)
+
+
 
 ### The wish list: 
 
@@ -41,9 +47,9 @@ The *nix crew has had the fun for WAY too long.  I use Yakuake (Non-gnome) or Gu
 Meet the stars of performance 
 1. [ConEmu](https://conemu.github.io/)
 2. PowerShell [Get-MOTD](https://github.com/mmillar-bolis/ps-motd)
-3. Some Profile-Fu
+3. Some [Profile-Fu](http://q2servers.com/)
 4. The Remote Shells
-5. The hundreds of hours I wasted PoSh'ing out some ASCII art.
+5. The appreciation of fruit on Pizza.
 
 ### MacOS Edition
 
