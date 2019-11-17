@@ -14,7 +14,7 @@ published: true
 # Juice your Shell!
 
 ###### Be the hero your systems need you to be
-![](2019-11-17-14-05-46.png)
+![](/_includes/2019-11-17-14-05-46.png)
 
 The *nix crew has had the fun for WAY too long.  I use Yakuake (Non-gnome) or Guake (Gnome) for a single reason:  Quake-style slider.  Not only because its unbelievably handy - but it fondly reminds me of my youth where I could smash any internet stranger in a Rail Arena or Rocket in Quake 2.  Oh... youth is wasted on the young. 
 
