@@ -1,7 +1,7 @@
 ---
 title: "What can we do for you?"
 permalink: /services/
-layout: home
+layout: single
 ---
 
 ## Training Services
