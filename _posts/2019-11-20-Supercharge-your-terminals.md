@@ -13,17 +13,20 @@ published: false
 
 # Juice your Shell!
 
+###### Be the hero the world needs
+![](2019-11-17-14-05-46.png)
+
 The *nix crew has had the fun for WAY too long.  I use Yakuake (Non-gnome) or Guake (Gnome) for a single reason:  Quake-style slider.  Not only because its unbelievably handy - but it fondly reminds me of my youth where I could smash any internet stranger in a Rail Arena or Rocket in Quake 2.  Oh... youth is wasted on the young. 
 
-Anyways, here is my wish list: 
+### The wish list: 
 
 * Quake-style drop-down
 * Transparent **
-* Easily connect to some of my admin shells (*PowerCLI*, *Exchange Management Shell*, *Skype for Business*, and *SCCM*)
+* **Easily** connect to some of my admin shells (*PowerCLI*, *Exchange Management Shell*, *Skype for Business*, and *SCCM*)
 * A useful launch / MOTD
 * A picture of a Ninja somewhere
 * Colourful *
-* Easily switch between 
+* **Easily** switch between 
 **elevated** and daily driver console - because neither **you** nor I are silly enough to use our workstation as admin.  Don't be daft. 
 
 #### Notes
