@@ -69,7 +69,7 @@ Find the bottom two `</dict></plist>` keys and add:
 <true/>
 ```
 
-right above them.  If `vi` isn't your jam, its <kbd>: <kbd>w</kbd> <kbd>q</kbd></kbd> to save and exit from that madness
+right above them.  If `vi` isn't your jam, its <kbd>:</kbd> <kbd>w</kbd> <kbd>q</kbd> to save and exit from that madness
 * It's an actual *nix Shell and I don't have Office 365 - so I'm driving blind as far as getting a Mac -> Exchange Shell with a hotkey
 
 ### The actual guide
