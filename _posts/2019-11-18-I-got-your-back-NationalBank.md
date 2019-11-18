@@ -28,10 +28,10 @@ What this means, is that they are using an intermediary system that will send a 
 Furthermore, you quoted the former privacy commissioner stating, "National Bank's request for customer login information for another bank is 'unprecedented.' - I can now conclude that she doesn't file her own taxes - as it uses the same mechanism - and has for several years.  As do many federal services, and many financial institutions.
 
 Step 1:  Go to CRA My Account
-![](2019-11-18-13-46-05.png)
+![](/assets/images/2019-11-18-13-57-04.png)
 
 Step 2:  Verify your identity by logging into your financial instution
-![](2019-11-18-13-46-19.png)
+![](/assets/images/2019-11-18-13-57-28.png)
 
 
 Also, to finish off.  I believe the IPC could take notes from how NationalBank conducts their identity verification.  As a basic threat and risk mitigation technique - the less places that my information exists, the better.  Data breaches in 2019 are a numbers game.  It ultimately happens to nearly every organization - so it is far better off to play the odds.  I would rather have my bank protect my details AND act as a credential provider. 
