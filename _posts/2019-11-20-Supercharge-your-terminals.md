@@ -103,6 +103,9 @@ Import-PSSession $Session
 
 New-Alias -Name ConnectTo-Exchange -value connectExchange
 ```
+
+**This gives you the superpower of typing** `ConnectTo-Exchange` at any point and administering exchange.
+
 6. Walk around like a boss.  
 
 >Don't use a clipboard, use post-it notes and a sharpie - it makes everyone far more nervous for some reason. If you are in an office/cubicle farm setting - friendly protip:  Construction helmets and safety vests when completely unexpected give you +30 saving throw vs nosy managers.
