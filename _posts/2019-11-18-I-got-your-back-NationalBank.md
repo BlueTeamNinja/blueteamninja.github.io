@@ -9,7 +9,9 @@ tags:
   - news
   - industry
   - pitchforks
+header.image: https://e.snmc.io/i/300/w/1a733e6947b7e783157b796912caccaa/7561327
 published: true
+
 ---
 ## Letter to the Journalist
 
