@@ -8,7 +8,7 @@ tags:
   - Console
   - Powershell
   - Random Ninjitsu
-published: true
+published: false
 ---
 
 # Juice your Shell!
