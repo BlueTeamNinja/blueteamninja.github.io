@@ -57,14 +57,18 @@ Meet the stars of performance
 
 * Using iTerm2 instead of Conemu
 * Tweaking the app file to stop being a jerk and just act like the console it is
+
 ```
 vi /Applications/iTerm\ 2.app/Contents/Info.plist
 ```
+
 Find the bottom two `</dict></plist>` keys and add: 
+
 ```
 <key>LSUIElement</key>
 <true/>
 ```
+
 right above them.  If `vi` isn't your jam, its <kbd>: <kbd>w</kbd> <kbd>q</kbd></kbd> to save and exit from that madness
 * It's an actual *nix Shell and I don't have Office 365 - so I'm driving blind as far as getting a Mac -> Exchange Shell with a hotkey
 
