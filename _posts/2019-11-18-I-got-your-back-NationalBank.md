@@ -11,7 +11,7 @@ tags:
   - pitchforks
 published: true
 ---
-# I got your back, NationalBank
+## Letter to the Journalist
 
 > This is a copy/paste of the email I sent to the reporting journalist on November 18, 2019
 
