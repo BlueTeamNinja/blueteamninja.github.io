@@ -33,6 +33,7 @@ Get the official Google (seriously, I have nothing to do with them) Messages app
 ## Step 2A:  More IM in the browser
 
 Ditto for: 
+ * [Facebook Messenger](https://www.messenger.com)
  * [Telegram](https://web.telegram.org)
  * [WhatsApp](https://web.whatsapp.com)
  * [Discord](https://discordapp.com/channels/@me) (If you are an inner child)
