@@ -70,13 +70,13 @@ Better yet - I break out the various GEO fields when I bring them in.  If you lo
 My next favourite tool in hunting for credential abuse is the useragent string.  I realize how easy it is to fake an agent string, but it is a LOT of work to fake a historical useragent 'footprint' of a user.  As always, the more data you have the more value your data has.  It is very true in this case.  Conveniently, this works WAY better with unparsed useragent strings.  Leave those big ugly versions and character strings all together for this search - it will make anomalies stand out even more than usual.
 
 Here is a sneaky login using a stolen credential: 
-![](2020-01-24-17-40-21.png)
+![](/assets/images/2020-01-24-17-40-21.png)
 
 ## Nope.  Never.  Not from a windows box.
 This particular user is more likely to find the perfect pumpkin spice latte than they are to be caught dead using a windows machine.  2% of these logins were from somewhere else and we can begin the hunt.  
 
 Another example:
-![](2020-01-24-17-52-44.png)
+![](/assets/images/2020-01-24-17-52-44.png)
 
 ## Its OK to be Canadian
 
