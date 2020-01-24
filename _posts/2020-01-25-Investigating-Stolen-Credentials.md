@@ -15,13 +15,15 @@ published: true
 ## A 60-second spot check for stolen credential activity
 
 ### tl;dr Use known behaviour data to find anomalies
+---
+
 
 **Story time:** You wake up.  You grab your coffee, sit down, quickly scan your favourite headline feed and catch a glimpse of a corporate business partner splashed all over the headlines.  Their **everything** was jacked straight off their precious servers, or from a mishap, ransomware, open S3 bucket, whatever.  Either way, you know you have a LOT of accounts from your domain on that platform.
 
 Some call it a nightmare from hell.  The rest of us call it Tuesday. 
 
 
-Regardless of your experience in this scenario, you know there are a lot of Kyle@yourdomain.com and Karen@yourcorp.net with their suspiciously strong passwords of `Password!#` all over that single-factor hot mess.  Nobody ever suspects the [octothorpe](https://www.lexico.com/en/definition/octothorp) at the end of a password.  Nobody.  It's definitely not in the list of 1 billion hashes per sec my 3-year laptop can rip through hashcat. 
+Regardless of your experience in this scenario, you know there are a lot of [Kyle@yourdomain.com](mailto:chief@blueteam.ninja) and [Karen@yourcorp.net](mailto:chief@blueteam.ninja) with their suspiciously strong passwords of `Password!#` all over that single-factor hot mess.  Nobody ever suspects the [octothorpe](https://www.lexico.com/en/definition/octothorp) at the end of a password.  Nobody.  It's definitely not in the list of 1 billion hashes per sec my 3-year laptop can rip through hashcat. 
 
 Let's see if anyone is already perusing the inboxes of those precious Kyles and Karens shall we?  
 
@@ -34,9 +36,9 @@ I'm going to use an On Premises Exchange and Graylog for this example.  Obviousl
     * Username
     * Source IP
     * User Agent String
-* The ability to filter out Authenticated from Unauthenticated Traffic
+* [*Optional*] The ability to filter out Authenticated from Unauthenticated Traffic
     * Remove all IIS responses except 200
-    * Remove Authentication Failed
+    * Remove Failed Authentications
     * Remove Internal Traffic
 
 ##### Note 2
@@ -65,9 +67,9 @@ Better yet - I break out the various GEO fields when I bring them in.  If you lo
 
 ## Move to the Ugly Words
 
-My next favourite tool in hunting for credential abuse is the useragent string.  Of course it is easy to fake, but you have to do a lot of work to fake the 'footprint' of a user.  The more you log, the more this is true.  What makes this nice, is that big ugly user agent strings actually work in your favour instead of parsing them out. 
+My next favourite tool in hunting for credential abuse is the useragent string.  I realize how easy it is to fake an agent string, but it is a LOT of work to fake a historical useragent 'footprint' of a user.  As always, the more data you have the more value your data has.  It is very true in this case.  Conveniently, this works WAY better with unparsed useragent strings.  Leave those big ugly versions and character strings all together for this search - it will make anomalies stand out even more than usual.
 
-Take this login of stolen credential: 
+Here is a sneaky login using a stolen credential: 
 ![](2020-01-24-17-40-21.png)
 
 ## Nope.  Never.  Not from a windows box.
@@ -78,7 +80,7 @@ Another example:
 
 ## Its OK to be Canadian
 
-Nobody is SOOO Canadian that they own a BlackBerry in 2020.  
+Nobody is SOOO Canadian that they own a [BlackBerry in 2020](http://www.quickmeme.com/img/f1/f19cb1f69c4ee1bfeb5ea8ca3ed25ac89f142b84ca6b273a1a060d5f7c7939a5.jpg).  
 
 
 ## For one more look
@@ -89,6 +91,7 @@ Follow the numbers.  We have some pretty dedicated folks around here, but we def
 
 
 # Closing Remarks
+### This is why you Log the Needful.  Remember?
 
 Some of this is pretty old hat to my fellow log and SIEM superstars but it never hurts to go over the basics again.  You stood up your log management to do this kind of thing quickly and easily.  Better yet, you *have badass dashboards and alerts* for these behaviours!  EVEN BETTER YET, the [firewall team](https://isitthefirewall.net) did their job so your logs are pretty boring. 
 
