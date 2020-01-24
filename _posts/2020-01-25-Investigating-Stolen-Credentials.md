@@ -37,7 +37,7 @@ I'm going to use an On Premises Exchange and Graylog for this example.  Obviousl
     * Source IP
     * User Agent String
 * [*Optional*] The ability to filter out Authenticated from Unauthenticated Traffic
-    * Remove all IIS responses except 200
+    * Remove all HTTP responses except 200
     * Remove Failed Authentications
     * Remove Internal Traffic
 
