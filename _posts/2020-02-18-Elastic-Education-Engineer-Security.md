@@ -8,7 +8,7 @@ tags:
   - draft
 layout: splash
 classes: wide
-published: true
+published: false
 ---
 
 #Wander around
