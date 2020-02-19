@@ -9,12 +9,10 @@ tags:
 layout: splash
 classes: wide
 published: true
-header:
-  video:
-    id: wugDzliU7GY
-    provider: youtube
 ---
 
 #Wander around
 
 See the sites, cruise the page. 
+
+{% include video id="wugDzliU7GY" provider="youtube" %}
