@@ -9,7 +9,7 @@ tags:
   - Polaris
   - Windows Events
   - Threat Hunting
-published: true
+published: false
 ---
 
 ### This Part 1 of the series
