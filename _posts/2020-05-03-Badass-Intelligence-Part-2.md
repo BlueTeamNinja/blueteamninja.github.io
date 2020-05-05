@@ -17,11 +17,11 @@ published: true
 * [Part 1:]({% post_url 2020-05-03-Badass-Intelligence-Part-1 %}) Intro
 * Part 2: Creating the API *(You are Here)*
 * Part 3: Querying with Logstash (HTTP Filter)
-* Part 4: 
+* Part 4:
 
-## Oh Me, Oh My, a Powershell API !?
+## Oh Me, Oh My, a Powershell API
 
-You can do it in .NET or basically just let some of the bored folks (literally) at Microsoft do it for you.  Some of those great kids have given us **Polaris**. 
+You can do it in .NET or basically just let some of the bored folks (literally) at Microsoft do it for you.  Some of those great kids have given us **Polaris**.
 
 ### Get your tools
 
@@ -39,31 +39,31 @@ iwr https://github.com/PowerShell/Polaris/archive/master.zip -OutFile Polaris.zi
 
 This will dump the module whereever you are sitting in your Ninja Console.
 
-The very basics of Polaris: 
+The very basics of Polaris:
 
 * You create a new 'Polaris Route' (path and query, etc)
 * You create a 'Polaris' (hostname and IP, etc)
 
- *Polaris Route* directs incoming HTTP traffic where you want it.  In most cases, that means you want to respond to an HTTP GET from a client.  That is what any webpage you are looking at is doing - you, proud of your opposable thumbs, browse to a URL and your browser does HTTP GET.  The server responds with this beautiful blog in the form of HTML.  The browser enjoys this and responds accordingly.  Not long after they are laughing, dreaming of the future, making mix-tapes and trusting each other with overdue Blockbuster rentals.  It's beautiful. 
+ *Polaris Route* directs incoming HTTP traffic where you want it.  In most cases, that means you want to respond to an HTTP GET from a client.  That is what any webpage you are looking at is doing - you, proud of your opposable thumbs, browse to a URL and your browser does HTTP GET.  The server responds with this beautiful blog in the form of HTML.  The browser enjoys this and responds accordingly.  Not long after they are laughing, dreaming of the future, making mix-tapes and trusting each other with overdue Blockbuster rentals.  It's beautiful.
 
 *Polaris* Basics of the server config.
 
-If I want to use the URL `http://NinjaStar.blueteam.ninja:8080/lookup/user="CHIEF"` and have it respond with the details of CHIEF: 
+If I want to use the URL `http://NinjaStar.blueteam.ninja:8080/lookup/user="CHIEF"` and have it respond with the details of CHIEF:
 
 * Polaris:  
   * Hostname: ninjastar.blueteam.ninja
   * port:8080
-* PolarisRoute: 
+* PolarisRoute:
   * Method `GET`
   * Path `/lookup`
 
-Let's see a simple example of how to set that up: 
+Let's see a simple example of how to set that up:
 
 ```powershell
 ##  I like to keep my scripts and their modules together.
 ##  This makes them a lot more portable and easier to automate and commit to code repos etc
 
-### CHANGE ME FROM RELATIVE TO SCRIPTROOT WHEN FINISHED ### 
+### CHANGE ME FROM RELATIVE TO SCRIPTROOT WHEN FINISHED ###
 Import-Module .\Polaris\Polaris.psd1
 
 New-PolarisGetRoute -Path /lookup -Scriptblock {
@@ -79,7 +79,7 @@ Now we want some API code itself that can look for data with the name user which
 Polaris does most of the heavy lifting, so we just have a value called `$Request`
 Remember part 1?  Let's build on it some more
 
-Check this out: 
+Check this out:
 
 ```powershell
 $adSearch = $Request.Query['user']
@@ -90,10 +90,10 @@ That has the bits and pieces from the upper example and everything else I've com
 
 The basics of what I'm doing to the same snippet:
 
-1. Making the variables pretty
-2. Recursively searching for the Manager details as well
-3. Storing them in PSObjects and converting back to JSON to return out to the API
-4. One more *SUPER* ninja trick:  I'm adjusting my input for re-usability: 
+* Making the variables pretty
+* Recursively searching for the Manager details as well
+* Storing them in PSObjects and converting back to JSON to return out to the API
+* One more *SUPER* ninja trick:  I'm adjusting my input for re-usability:
   * username
   * CN=username,DC=blueteam,DC=ninja
   * SID, etc
@@ -102,7 +102,7 @@ The basics of what I'm doing to the same snippet:
 ##  I like to keep my scripts and their modules together.
 ##  This makes them a lot more portable and easier to automate and commit to code repos etc
 
-### CHANGE ME FROM RELATIVE TO SCRIPTROOT WHEN FINISHED ### 
+### CHANGE ME FROM RELATIVE TO SCRIPTROOT WHEN FINISHED ###
 Import-Module .\Polaris\Polaris.psd1
 
 New-PolarisGetRoute -Path /lookup -Scriptblock {
@@ -133,7 +133,7 @@ New-PolarisGetRoute -Path /lookup -Scriptblock {
         $bossTitle = $boss.title
         $bossname = $boss.name
 
-  #Tidy the results into some objects because 
+  #Tidy the results into some objects because
   #WE ARE NOT SAVAGES
     $qmanager = @{
 
@@ -167,7 +167,7 @@ Start-Polaris -Port 8080 -hostname $env:COMPUTERNAME
 
 ### AWESOME.  YOU DID IT
 
-#### You copy/pasted my stuff to look like a hero!
+#### You copy/pasted my stuff to look like a hero
 
 It's cool.  I don't mind. This is only the first half.
 
@@ -183,10 +183,9 @@ Forget error-checking and messing around though, go play with your new toy!
 
 put `http://YourPolarisServer:8080/lookup?user=CHIEF` into a web browser!  Obviously, your username isn't Chief.  Well, except for my friend Cristal Hief but she's not you.
 
-
 ## We've done a userlookup - Now a GPO lookup
 
-Exact same concept.  You even did the snippet in part 1.  This time we will chain some Polaris Routes together with our intelligence, add a dash of error-checking and Voila!: 
+Exact same concept.  You even did the snippet in part 1.  This time we will chain some Polaris Routes together with our intelligence, add a dash of error-checking and Voila!:
 
 ```powershell
 Import-Module "${PSSCriptRoot}\Polaris\Polaris.psd1"
@@ -270,9 +269,8 @@ Start-Polaris -Port 8080 -hostname $env:COMPUTERNAME
 ```
 
 Have a play with it in a web browser:
-http://YourServerName:8080/
+[http://example.local:8080/](http://example.local:8080/)
 
-## Cool.  
+## Cool
 
 We'll finish up our API tool with the GPO stuff and get it into the Elastic Stack in [Part 3]({% post_url 2020-05-03-Badass-Intelligence-Part-3 %})
-

@@ -12,7 +12,7 @@ tags:
 published: true
 ---
 
-### This Part 1 of the series
+### This is Part 1 of the series
 
 * Part 1: Intro (You are Here)
 * [Part 2:]({% post_url 2020-05-03-Badass-Intelligence-Part-2 %}) Creating the API
