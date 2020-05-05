@@ -1,5 +1,5 @@
 ---
-title: 'Add badass intelligence to logs using an API... made in PowerShell?'
+title: 'Badass Intelligence Part 1: An API... made in PowerShell?'
 date: 2020-05-02 03:15
 categories:
   - blog
@@ -9,7 +9,7 @@ tags:
   - Polaris
   - Windows Events
   - Threat Hunting
-published: false
+published: true
 ---
 
 ### This Part 1 of the series
@@ -24,6 +24,10 @@ published: false
 * [The Tutorial](#the-actual-tutorial)
 * [The snippet you need](#the-actual-snippet)
 * [Make a Ninja Console (Optional)]({% post_url 2019-11-20-Supercharge-your-terminals %})
+
+### Overview
+
+Use a very flexible powershell framework to create an API that lets you augment windows logs in Elastic Stack using native windows tools.  Primary examples being additional user data from Active Directory, Exchange, or the studycase - Group Policy Object names.
 
 ## Adding badass intelligence: Part 1 - Introduction
 
