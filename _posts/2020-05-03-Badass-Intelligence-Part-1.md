@@ -49,26 +49,16 @@ I tried and tried and tried.  So have smarter people than me.  That information 
 
 We have a few options, but to do this at scale, I wanted to be able to process upwards of a few thousand a minute.  Not a huge flood, but way more than enough to have to stop and think about the speed of whatever my solution is.
 
-First choice for most:  Python or anything else.   **Cowards**. 
+First choice for most:  Python or anything else.   **Cowards**.
 Firtster choice:  Powershell!
 
-### Get your tools
+I know I am being sent the data of `{6AC1786C-016F-11D2-945F-00C04fB984F9}` and I want to convert that to hairflip beautiful english.  Everything on the information superhighway tells you to use `Get-ADObject` or `Get-GPO` etc.  These are great, but they have dependencies, they involve extra modules and most importantly - they are slow.  
 
-You need:
+Slow like 
 
-* Polaris:  Don't bother installing from the command-line - just go get the latest code.  The Powershell Gallery version was ancient last I looked.
-* Enthusiasm
+>"How high are you? ... Yes." 
 
-Install Polaris:
-**Here you go** - you lazy sods:  
-
-```powershell
-iwr https://github.com/PowerShell/Polaris/archive/master.zip -OutFile Polaris.zip;Expand-Archive .\Polaris.zip;Remove-Item .\Polaris.zip
-```  
-
-This will dump it whereever you are sitting in PoSH.
-
-The next thing I wanted was a way to convert the data of `{6AC1786C-016F-11D2-945F-00C04fB984F9}` and convert that to hairflip beautiful english.  Everything on the information superhighway tells you to use `Get-ADObject` or `Get-GPO` etc.  These are great, but they have dependencies, they involve extra modules and most importantly - they are slow.  Slow like "How high are you? ... Yes." level of slow. 1-2 seconds will suck with traffic going through.  
+level of slow. 1-2 seconds will suck with any volume of traffic going through.  
 
 ### The actual tutorial
 
