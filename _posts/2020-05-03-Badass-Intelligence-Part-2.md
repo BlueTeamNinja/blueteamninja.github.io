@@ -1,5 +1,5 @@
 ---
-title: 'Badass Intelligence Part 2: The Listener'
+title: 'Badass Intelligence Part 2: Create the API'
 date: 2020-05-02 03:15
 categories:
   - blog
@@ -17,260 +17,126 @@ published: true
 * [Part 1:]({% post_url 2020-05-03-Badass-Intelligence-Part-1 %}) Intro
 * Part 2: Creating the API *(You are Here)*
 * Part 3: Querying with Logstash (HTTP Filter)
-* Part 4:
 
-## Oh Me, Oh My, a Powershell API
+## Adding badass intelligence: Part 1 - Introduction
 
-You can do it in .NET or basically just let some of the bored folks (literally) at Microsoft do it for you.  Some of those great kids have given us **Polaris**.
+First, I'm going to explain the problem I've come across.  Basically - you can grab a lot of good info about windows events out of the box, but there are also a lot of gaps.  These gaps are even more noticeable when you realely dive under the hood.  One of my most memorable cases of this was trying to simply track changes made to GPOs.  Yes, I am well aware there are third-party products that do this but that isn't always an option.  Whether its resources, time, or basically alert fatigue is so severe that you only want to know about the stuff you can actually get a grip on.  
 
-### Get your tools
+I'm going to use this exact example for this guide.  In this case, I am talking about Windows Event ID 5136 (Changes made to a Directory Object).  This event ID covers a lot of interesting things and I will show you the steps I took to narrow this down to just my goal:  Changes made to Group Policy Objects (GPOs).  
 
-You need:
+Let's look at that exact log: 
 
-* Polaris:  Don't bother installing from the command-line - just go get the latest code.  The Powershell Gallery version was ancient last I looked.
-* Enthusiasm
+> This is a beautiful screenshot of a very important log, particularly for sysadmins but the cyber folks as well.  Changes made to Active Directory Objects.  Notice what is missing - the *NAME* of the object that was changed!  Those of you who are more observant than me will notice that Name is blurred out - but that is the name of my internal domain NOT the name of the object that changed. 
 
-Install Polaris:
-**Here you go** - you lazy sods:  
+|![Event ID 5136](/assets/images/5136.png)
+
+What is the security relevence?  It's always nice when your default domain policy gets modified to include a new Local Administrator, right?  That's a cute thing to see. 
+
+However, you pull that log up in your *Thrunting* fashion in Kibana and BAM!  There is all your goodness, but without a freaking clue about what is going on.  I mean, it is really nice that there was a modification to `{6AC1786C-016F-11D2-945F-00C04fB984F9}`.  That is great news to a robot somewhere.  What I told you there was a modification to **Default Domain Controllers Policy**?  That actually means something to us meat popsicles.
+
+### Dive in those dumpsters - it's not there
+
+I tried and tried and tried.  So have smarter people than me.  That information isn't in the log.  We need to correlate.  That is what a SIEM does - and in this case, you're reading my article because *you* are the SIEM.
+
+### Query for it
+
+We have a few options, but to do this at scale, I wanted to be able to process upwards of a few thousand a minute.  Not a huge flood, but way more than enough to have to stop and think about the speed of whatever my solution is.
+
+First choice for most:  Python or anything else.   **Cowards**. 
+Firtster choice:  Powershell!
+
+The next thing I wanted was a way to convert the data of `{6AC1786C-016F-11D2-945F-00C04fB984F9}` and convert that to hairflip beautiful english.  Everything on the information superhighway tells you to use `Get-ADObject` or `Get-GPO` etc.  These are great, but they have dependencies, they involve extra modules and most importantly - they are slow.  Slow like "How high are you? ... Yes." level of slow. 1-2 seconds will suck with traffic going through.  
+
+### The actual tutorial
+
+The first thing we want to do for this shindig is to get some powershell working that can translate our data.  This is a honed-in example, but you can follow the rest of the guide applying the exact same concepts to your logs.  You can build out a pretty sweet API and I'll add some more examples at the end.
+
+#### Converting a GUID to a GPO Name
+
+1. Use ADUC / DSAC - Who knows what their real names are, that is how you launch them from command line.  Either way - we don't want to clicky mcClickFace our way through this.  Don't be boring.
+2. `Get-GPO` - It has dependencies and I found it slow.  YMMV.
+3. VBScript.  (Get Out meme)
+4. My way.  You can agree with me or be wrong.  Your choice. 
+
+Sweet, now that we have settled on #4, let's do this. 
+
+#### .NET Accelerators for the Win
+
+I love this dirty trick.  `[adsisearcher]` is one of my favourite utilities to abuse in a powershell script for speed.  Pretty much all of the accelerators rock.  It's right in the name.
+
+Try this on a domain-joined windows box:
 
 ```powershell
-iwr https://github.com/PowerShell/Polaris/archive/master.zip -OutFile Polaris.zip;Expand-Archive .\Polaris.zip;Remove-Item .\Polaris.zip
-```  
-
-This will dump the module whereever you are sitting in your Ninja Console.
-
-The very basics of Polaris:
-
-* You create a new 'Polaris Route' (path and query, etc)
-* You create a 'Polaris' (hostname and IP, etc)
-
- *Polaris Route* directs incoming HTTP traffic where you want it.  In most cases, that means you want to respond to an HTTP GET from a client.  That is what any webpage you are looking at is doing - you, proud of your opposable thumbs, browse to a URL and your browser does HTTP GET.  The server responds with this beautiful blog in the form of HTML.  The browser enjoys this and responds accordingly.  Not long after they are laughing, dreaming of the future, making mix-tapes and trusting each other with overdue Blockbuster rentals.  It's beautiful.
-
-*Polaris* Basics of the server config.
-
-If I want to use the URL `http://NinjaStar.blueteam.ninja:8080/lookup/user="CHIEF"` and have it respond with the details of CHIEF:
-
-* Polaris:  
-  * Hostname: ninjastar.blueteam.ninja
-  * port:8080
-* PolarisRoute:
-  * Method `GET`
-  * Path `/lookup`
-
-Let's see a simple example of how to set that up:
-
-```powershell
-##  I like to keep my scripts and their modules together.
-##  This makes them a lot more portable and easier to automate and commit to code repos etc
-
-### CHANGE ME FROM RELATIVE TO SCRIPTROOT WHEN FINISHED ###
-Import-Module .\Polaris\Polaris.psd1
-
-New-PolarisGetRoute -Path /lookup -Scriptblock {
-
-# IOU - Working code goes here
-
-}
-Start-Polaris -Port 8080 -hostname $env:COMPUTERNAME
+[adsisearcher]("samAccountName=$env:USERNAME")
 ```
 
-Now we want some API code itself that can look for data with the name user which will have the value CHIEF
-
-Polaris does most of the heavy lifting, so we just have a value called `$Request`
-Remember part 1?  Let's build on it some more
-
-Check this out:
+You'll see a bunch of nonsense.  Let's build on it.  Wrap what you typed in brackets and add `findone()` to the end:
 
 ```powershell
-$adSearch = $Request.Query['user']
-[adsisearcher]("samAccountName=$adSearch")
+([adsisearcher]("sAMAccountName=$env:USERNAME")).findone()
 ```
 
-That has the bits and pieces from the upper example and everything else I've commented on.  Read the comments to get caught up with everything that has gone wrong in your life up until now.  Smile and carry on.  You got this.
-
-The basics of what I'm doing to the same snippet:
-
-* Making the variables pretty
-* Recursively searching for the Manager details as well
-* Storing them in PSObjects and converting back to JSON to return out to the API
-* One more *SUPER* ninja trick:  I'm adjusting my input for re-usability:
-  * username
-  * CN=username,DC=blueteam,DC=ninja
-  * SID, etc
+Nothing changes - except its a good practice to avoid ambiguity.  Purely good habit.  Let's go *slightly* further: 
 
 ```powershell
-##  I like to keep my scripts and their modules together.
-##  This makes them a lot more portable and easier to automate and commit to code repos etc
+([adsisearcher]("sAMAccountName=$env:USERNAME")).findone().properties()
+```
 
-### CHANGE ME FROM RELATIVE TO SCRIPTROOT WHEN FINISHED ###
-Import-Module .\Polaris\Polaris.psd1
+Hot damn.  We now have a bucket of info about... you.  Good sport old boy. The adsisearch accelerator is very versatile and hate typing again and again, so in the spirit of me being awesome.  I'm going to make a string out of my query and then call adsisearcher with that variable. 
 
-New-PolarisGetRoute -Path /lookup -Scriptblock {
+```powershell
+$adsiQueryStr = "sAMAccountName=$env:USERNAME"
+([adsisearcher]("$adsiQueryStr")).findone().properties()
+```
 
-  if ($Request.Query['user']) {
+The results are cool and you can start to see where this is going: 
 
-    #I have a bad habit of using single letters for queries
-    #and I WONT CHANGE  Not for ANY PONY IN EQUESTRIA
+```text
+Name                           Value
+----                           -----
+lastlogoff                     {0}
+mstsexpiredate                 {4/14/2015 7:21:42 PM}
+department                     {Badassery Wizards}
+msexchpreviousrecipienttype... {1}
+msexchrecipienttypedetails     {1}
+msexchwhenmailboxcreated       {11/3/1984 2:27:16 PM}
+primarygroupid                 {513}
+msexcharchivequota             {104857600}
+title                          {Chief of Amazingery}
+mail                           {chief@blueteam.ninja HMU}
+whenchanged                    {4/26/2020 3:04:13 PM}
+givenname                      {M'Lord}
+```
 
-    $q = $Request.Query['user']
-        if($q -match '^CN=')   {
-        $r = ([adsi]("LDAP://$q")).Properties
-        } elseif ($q -match '([a-zA-Z\-]+\s?\b){2,}'){
-        $r = ([adsisearcher]("CN=$q")).FindOne().Properties
-        }else {
-        $r = ([adsisearcher]("samAccountName=$q")).FindOne().Properties
-        }
+Take note of the curly braces.  That means its a list / array.  In most cases, it is only one object but take note of it.  We'll need to account for that, but not right now, chief.  Slow down a touch.  Let's say we want to access my department.  You can call an individual property - but it's a LOT easier to assign it to a variable then call the properties.  Let's make this entire list into simply `$r`.  Hit <kbd>UP</kdb> in your [ULTIMATE NINJA CONSOLE](2019-11-20-Supercharge-your-terminals.md) and change it to  `$r = ([adsisearcher]("$adsiQueryStr")).findone().properties()`  Now you can try calling a single value:  `$r.department` and you should see `{Badassery Wizards}` unless you work somewhere boring, then you'll see a real department. 
 
-        $title = $r.title
-        $email = $r.mail
-        $boss = $r.manager
-        $name = $r.displayname
-        $branch = $r.description
+Now that we have gone through this little exercise, I'll save you some research.  Instead of doing an ADSI search for your own logged-in username, we're going to do it for a GUID.  Since we could theoretically get GUIDs mixed up with other things, and more importantly for speed, we'll narrow our search down to just the objects we want using the LDAP filter syntax: `&(objectCategory=groupPolicyContainer)` followed by our query: `(name={$ValueOfGUID})`
 
-    ## This is the lookup syntax when you have an exact string that you want.  Also seen above in the IF statements
-    $boss = ([adsi]("LDAP://$boss")).Properties
-        $bossemail = $boss.mail
-        $bossTitle = $boss.title
-        $bossname = $boss.name
+```powershell
+$q = "6AC1786C-016F-11D2-945F-00C04fB984F9"
+$adsiQueryStr = "(&(objectCategory=groupPolicyContainer)(name={$q}))"
+$objName = ([adsisearcher]$adsiQueryStr).findone().properties
+```
 
-  #Tidy the results into some objects because
-  #WE ARE NOT SAVAGES
-    $qmanager = @{
+You should be staring at your default domain policy at this point.  If not, I failed you horribly and I will have someone discipline me later.  Meanwhile, go grab a GUID from Group Policy Manager and swap it out for the `$q` variable above and re-run it.  
 
-      ## Take special note of the variable inside the double-quotes
-      ## This is a cool hack to convert a single object entity to a string otherwise it would
-      ## have { } around it and it would be ugly and I prefer my people to be ugly and my data to be beautiful
-        "title" = "$bosstitle"
-        "name" = "$bossname"
-        "email" = "$bossemail"
+>Normally, this is when I would simply wrap this up as a function then save it in my profile.  It's pretty useful to do this with pretty much anything you've ever had to google.
+
+However, in this case I don't want a function - I want an API I can query!  I will toss in a bit of error checking and prettiness: 
+
+```powershell
+$q = "6AC1786C-016F-11D2-945F-00C04fB984F9"
+$adsiQueryStr = "(&(objectCategory=groupPolicyContainer)(name={$q}))"
+$objName = ([adsisearcher]$adsiQueryStr).findone().properties
+  if ($objName) {
+    $GPDisplayName = $objName.displayname.trim('{}')
+    $GPCreated = $objName.whencreated
+    $GPLastModified = $objName.whenchanged
+    $GPResponse = @{
+      "DisplayName" = "$GPDisplayName"
+      "Created" = "$GPCreated"
+      "LastModified" = "$GPLastModified"
     }
-
-    $qresponse = @{
-        "title" = "$title"
-        "name" = "$name"
-        "email" = "$email"
-        ## You may notice that qresponse is converted to JSON but not qmanager?
-        ## That's because its nested within.  Works out nicely - order of this operation matters somewhat.  
-        "manager" = $qmanager
-        "branch" = "$branch"
-    } | ConvertTo-Json
-
-    $Response.Send($qresponse)
-  } else {
-    $response.send("Try again, friends.")
-  }
-  }
-  }
-
-Start-Polaris -Port 8080 -hostname $env:COMPUTERNAME
 ```
 
-### AWESOME.  YOU DID IT
-
-#### You copy/pasted my stuff to look like a hero
-
-It's cool.  I don't mind. This is only the first half.
-
-Also, at this point you may have run into an error or two if you are playing along.  
-You'll need these:  
-
-* `Remove-PolarRoute` and
-* `Stop-Polaris`
-
-as you follow along.
-
-Forget error-checking and messing around though, go play with your new toy!
-
-put `http://YourPolarisServer:8080/lookup?user=CHIEF` into a web browser!  Obviously, your username isn't Chief.  Well, except for my friend Cristal Hief but she's not you.
-
-## We've done a userlookup - Now a GPO lookup
-
-Exact same concept.  You even did the snippet in part 1.  This time we will chain some Polaris Routes together with our intelligence, add a dash of error-checking and Voila!:
-
-```powershell
-Import-Module "${PSSCriptRoot}\Polaris\Polaris.psd1"
-
-New-PolarisGetRoute -Path /userlookup -Scriptblock {
-
-if ($Request.Query['user']) {
-    $q = $Request.Query['user']
-
-        if($q -match '^CN=')   {
-            $r = ([adsi]("LDAP://$q")).Properties
-        } elseif ($q -match '([a-zA-Z\-]+\s?\b){2,}'){
-        $r = ([adsisearcher]("CN=$q")).FindOne().Properties
-        }else {
-        $r = ([adsisearcher]("samAccountName=$q")).FindOne().Properties
-        }
-
-        $title = $r.title
-        $email = $r.mail
-        $boss = $r.manager
-        $name = $r.displayname
-        $branch = $r.description
-
-    $boss = ([adsi]("LDAP://$boss")).Properties
-        $bossemail = $boss.mail
-        $bossTitle = $boss.title
-        $bossname = $boss.name
-
-    $qmanager = @{
-        "title" = "$bosstitle"
-        "name" = "$bossname"
-        "email" = "$bossemail"
-    }
-
-    $qresponse = @{
-        "title" = "$title"
-        "name" = "$name"
-        "email" = "$email"
-        "manager" = $qmanager
-        "branch" = "$branch"
-    } | ConvertTo-Json
-
-    $Response.Send($qresponse)
-} else {
-    $response.send("Try again, friends.")
-}
-}
-
-New-PolarisGetRoute -Path /gpolookup -Scriptblock {
-  if ($Request.Query['guid']) {
-
-    $q = $Request.Query['guid']
-    $objStr = "(&(objectCategory=groupPolicyContainer)(name={$q}))"
-    $objName = ([adsisearcher]$objStr).findone().properties
-    if ($objName) {
-        $GPDisplayName = $objName.displayname.trim('{}')
-        $GPCreated = $objName.whencreated
-        $GPLastModified = $objName.whenchanged
-        $GPResponse = @{
-            "DisplayName" = "$GPDisplayName"
-            "Created" = "$GPCreated"
-            "LastModified" = "$GPLastModified"
-        } | ConvertTo-Json
-
-    $response.send($GPResponse)
-    }else{
-        $GPError = @{
-            "Error" = "Not Found"
-        } | ConvertTo-Json
-        $response.send($GPError)
-    }
-} else{
-    $GPInputError = @{
-        "Error" = "No valid input"
-    } | ConvertTo-Json
-    $response.send($GPInputError)
-}
-}
-
-Start-Polaris -Port 8080 -hostname $env:COMPUTERNAME
-```
-
-Have a play with it in a web browser:
-[http://example.local:8080/](http://example.local:8080/)
-
-## Cool
-
-We'll finish up our API tool with the GPO stuff and get it into the Elastic Stack in [Part 3]({% post_url 2020-05-03-Badass-Intelligence-Part-3 %})
+Save your file as `snippet_GUIDtoName.ps1` and head over to Part 3.

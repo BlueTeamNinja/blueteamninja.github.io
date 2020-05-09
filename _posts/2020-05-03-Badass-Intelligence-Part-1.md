@@ -16,8 +16,7 @@ published: true
 
 * Part 1: Intro (You are Here)
 * [Part 2:]({% post_url 2020-05-03-Badass-Intelligence-Part-2 %}) Creating the API
-* Part 3: Querying with Logstash (HTTP Filter)
-* Part 4: 
+* [Part 2:]({% post_url 2020-05-03-Badass-Intelligence-Part-3 %}) Querying with Logstash (HTTP Filter)
 
 ### Shortcuts
 
@@ -28,6 +27,8 @@ published: true
 ### Overview
 
 Use a very flexible powershell framework to create an API that lets you augment windows logs in Elastic Stack using native windows tools.  Primary examples being additional user data from Active Directory, Exchange, or the studycase - Group Policy Object names.
+
+![Diagram](/assets/images/Diagram.png)
 
 ## Adding badass intelligence: Part 1 - Introduction
 
