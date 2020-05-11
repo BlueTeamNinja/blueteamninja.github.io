@@ -16,7 +16,7 @@ published: true
 
 * Part 1: Intro (You are Here)
 * [Part 2:]({% post_url 2020-05-03-Badass-Intelligence-Part-2 %}) Creating the API
-* [Part 2:]({% post_url 2020-05-03-Badass-Intelligence-Part-3 %}) Querying with Logstash (HTTP Filter)
+* [Part 3:]({% post_url 2020-05-03-Badass-Intelligence-Part-3 %}) Querying with Logstash (HTTP Filter)
 
 ### Shortcuts
 

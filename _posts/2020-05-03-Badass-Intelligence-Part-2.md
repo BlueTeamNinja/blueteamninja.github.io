@@ -16,7 +16,7 @@ published: true
 
 * [Part 1:]({% post_url 2020-05-03-Badass-Intelligence-Part-1 %}) Intro
 * Part 2: Creating the API *(You are Here)*
-* Part 3: Querying with Logstash (HTTP Filter)
+* [Part 3:]({% post_url 2020-05-03-Badass-Intelligence-Part-3 %}) Querying with Logstash (HTTP Filter)
 
 ## Adding badass intelligence: Part 1 - Introduction
 
@@ -108,7 +108,7 @@ whenchanged                    {4/26/2020 3:04:13 PM}
 givenname                      {M'Lord}
 ```
 
-Take note of the curly braces.  That means its a list / array.  In most cases, it is only one object but take note of it.  We'll need to account for that, but not right now, chief.  Slow down a touch.  Let's say we want to access my department.  You can call an individual property - but it's a LOT easier to assign it to a variable then call the properties.  Let's make this entire list into simply `$r`.  Hit <kbd>UP</kdb> in your [ULTIMATE NINJA CONSOLE](2019-11-20-Supercharge-your-terminals.md) and change it to  `$r = ([adsisearcher]("$adsiQueryStr")).findone().properties()`  Now you can try calling a single value:  `$r.department` and you should see `{Badassery Wizards}` unless you work somewhere boring, then you'll see a real department. 
+Take note of the curly braces.  That means its a list / array.  In most cases, it is only one object but take note of it.  We'll need to account for that, but not right now, chief.  Slow down a touch.  Let's say we want to access my department.  You can call an individual property - but it's a LOT easier to assign it to a variable then call the properties.  Let's make this entire list into simply `$r`.  Hit <kbd>UP</kdb> in your [ULTIMATE NINJA CONSOLE](2019-11-20-Supercharge-your-terminals.md) and change it to  `$r = ([adsisearcher]("$adsiQueryStr")).findone().properties()`  Now you can try calling a single value:  `$r.department` and you should see `{Badassery Wizards}` unless you work somewhere boring, then you'll see a real department.
 
 Now that we have gone through this little exercise, I'll save you some research.  Instead of doing an ADSI search for your own logged-in username, we're going to do it for a GUID.  Since we could theoretically get GUIDs mixed up with other things, and more importantly for speed, we'll narrow our search down to just the objects we want using the LDAP filter syntax: `&(objectCategory=groupPolicyContainer)` followed by our query: `(name={$ValueOfGUID})`
 
@@ -122,7 +122,7 @@ You should be staring at your default domain policy at this point.  If not, I fa
 
 >Normally, this is when I would simply wrap this up as a function then save it in my profile.  It's pretty useful to do this with pretty much anything you've ever had to google.
 
-However, in this case I don't want a function - I want an API I can query!  I will toss in a bit of error checking and prettiness: 
+However, in this case I don't want a function - I want an API I can query!  I will toss in a bit of error checking and prettiness:
 
 ```powershell
 $q = "6AC1786C-016F-11D2-945F-00C04fB984F9"
