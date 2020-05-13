@@ -34,7 +34,7 @@ We'll break down the logic after the code:
     ]
   }
   http {
-        url => "http://vsscriptWin:8080/gpolookup"
+        url => "http://example.local:8080/gpolookup"
         query =>  { "guid" => "%{[policy][dn]}" }
         verb => GET
     }
@@ -46,10 +46,13 @@ We'll break down the logic after the code:
    mutate { remove_field => "body"}
   }
 ```
+
  {% endraw %}
 The if statement looks for any winlogbeat with an ObjectClass of a groupPolicyContainer.  
 There are several Windows Event IDs that contain GUIDs of GPO names.  This will run the lookup on all of them, map
-the corresponding json results to *policy.dn*.DETAILS. 
+the corresponding json results to *policy.dn*.
+
+The gruntwork is all done by the [HTTP filter](https://www.elastic.co/guide/en/logstash/current/plugins-filters-http.html)
 
 If you've finished everything up to this point - you have collected your logs, augmented them with a very flexible powershell interface that allows you to POSH your data up in as many ways as you have Neurons.
 
