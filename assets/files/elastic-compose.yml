@@ -84,4 +84,4 @@ volumes:
 
 networks:
   elastic:
-    driver: bridge
+    driver: nat
